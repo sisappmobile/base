@@ -29,6 +29,7 @@ class BaseWidgets {
     TextInputType? textInputType,
     bool obscureText = false,
     FormFieldValidator<String>? validator,
+    bool? isDense = false,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,6 +63,7 @@ class BaseWidgets {
             }
           } : null,
           decoration: InputDecoration(
+            isDense: isDense,
             border: OutlineInputBorder(
               borderSide: BorderSide(
                 color: AppColors.outline().withOpacity(0.3),
@@ -232,6 +234,7 @@ class BaseWidgets {
     required TextEditingController controller,
     Jiffy? jiffy,
     void Function(Jiffy newValue)? onSelected,
+    bool? isDense = false,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,6 +279,7 @@ class BaseWidgets {
             suffixIcon: const Icon(
               Icons.event,
             ),
+            isDense: isDense,
           ),
           validator: (String? value) {
             if (mandatory) {
@@ -311,6 +315,7 @@ class BaseWidgets {
     required TextEditingController controller,
     required Jiffy? jiffy,
     required void Function(Jiffy newValue) onSelected,
+    bool? isDense = false,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,6 +360,7 @@ class BaseWidgets {
             suffixIcon: const Icon(
               Icons.event,
             ),
+            isDense: isDense,
           ),
           validator: (String? value) {
             if (mandatory) {
@@ -389,6 +395,7 @@ class BaseWidgets {
     required void Function(SpinnerItem selectedItem) onSelected,
     String? label,
     bool pendingChange = false,
+    bool? isDense = false,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -440,6 +447,7 @@ class BaseWidgets {
               Icons.keyboard_arrow_down,
               color: AppColors.onSurface().withOpacity(0.5),
             ),
+            isDense: isDense,
           ),
           validator: (String? value) {
             if (mandatory) {
