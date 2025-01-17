@@ -7,10 +7,10 @@ extension ColorExtension on Color {
     assert(1 <= percent && percent <= 100);
     var f = 1 - percent / 100;
     return Color.fromARGB(
-        alpha,
-        (red * f).round(),
-        (green  * f).round(),
-        (blue * f).round(),
+        a.toInt(),
+        (r.toInt() * f).round(),
+        (g.toInt()  * f).round(),
+        (b.toInt() * f).round(),
     );
   }
 
@@ -18,10 +18,10 @@ extension ColorExtension on Color {
     assert(1 <= percent && percent <= 100);
     var p = percent / 100;
     return Color.fromARGB(
-        alpha,
-        red + ((255 - red) * p).round(),
-        green + ((255 - green) * p).round(),
-        blue + ((255 - blue) * p).round(),
+        a.toInt(),
+        r.toInt() + ((255 - r.toInt()) * p).round(),
+        g.toInt() + ((255 - g.toInt()) * p).round(),
+        b.toInt() + ((255 - b.toInt()) * p).round(),
     );
   }
 }

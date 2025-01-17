@@ -22,7 +22,7 @@ class ErrorOverlay extends ModalRoute<void> {
   bool get barrierDismissible => true;
 
   @override
-  Color get barrierColor => Colors.black.withOpacity(0.8);
+  Color get barrierColor => Colors.black.withValues(alpha:0.8);
 
   @override
   String get barrierLabel => "null";
@@ -49,7 +49,7 @@ class ErrorOverlay extends ModalRoute<void> {
           children: <Widget>[
             Lottie.asset(
               "assets/lottie/error.json",
-              frameRate: FrameRate(60),
+              frameRate: const FrameRate(60),
               width: Dimensions.size100 * 3,
               repeat: false,
             ),
@@ -118,7 +118,7 @@ class SuccessOverlay extends ModalRoute<void> {
   bool get barrierDismissible => true;
 
   @override
-  Color get barrierColor => Colors.black.withOpacity(0.8);
+  Color get barrierColor => Colors.black.withValues(alpha:0.8);
 
   @override
   String get barrierLabel => "null";
@@ -145,7 +145,7 @@ class SuccessOverlay extends ModalRoute<void> {
           children: <Widget>[
             Lottie.asset(
               "assets/lottie/success.json",
-              frameRate: FrameRate(60),
+              frameRate: const FrameRate(60),
               width: Dimensions.size100 * 2,
               repeat: false,
             ),
@@ -219,7 +219,7 @@ class InfoOverlay extends ModalRoute<void> {
   bool get barrierDismissible => dismissable;
 
   @override
-  Color get barrierColor => Colors.black.withOpacity(0.8);
+  Color get barrierColor => Colors.black.withValues(alpha:0.8);
 
   @override
   String get barrierLabel => "null";

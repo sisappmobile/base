@@ -66,13 +66,13 @@ class BaseWidgets {
             isDense: isDense,
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.outline().withOpacity(0.3),
+                color: AppColors.outline().withValues(alpha:0.3),
               ),
               borderRadius: BorderRadius.circular(Dimensions.size10),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.outline().withOpacity(0.3),
+                color: AppColors.outline().withValues(alpha:0.3),
               ),
               borderRadius: BorderRadius.circular(Dimensions.size10),
             ),
@@ -176,13 +176,13 @@ class BaseWidgets {
             helperText: helperText,
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.outline().withOpacity(0.3),
+                color: AppColors.outline().withValues(alpha:0.3),
               ),
               borderRadius: BorderRadius.circular(Dimensions.size10),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.outline().withOpacity(0.3),
+                color: AppColors.outline().withValues(alpha:0.3),
               ),
               borderRadius: BorderRadius.circular(Dimensions.size10),
             ),
@@ -202,7 +202,7 @@ class BaseWidgets {
             ),
             disabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.outline().withOpacity(0.2),
+                color: AppColors.outline().withValues(alpha:0.2),
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(Dimensions.size10),
@@ -252,13 +252,13 @@ class BaseWidgets {
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.outline().withOpacity(0.3),
+                color: AppColors.outline().withValues(alpha:0.3),
               ),
               borderRadius: BorderRadius.circular(Dimensions.size10),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.outline().withOpacity(0.3),
+                color: AppColors.outline().withValues(alpha:0.3),
               ),
               borderRadius: BorderRadius.circular(Dimensions.size10),
             ),
@@ -333,13 +333,13 @@ class BaseWidgets {
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.outline().withOpacity(0.3),
+                color: AppColors.outline().withValues(alpha:0.3),
               ),
               borderRadius: BorderRadius.circular(Dimensions.size10),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.outline().withOpacity(0.3),
+                color: AppColors.outline().withValues(alpha:0.3),
               ),
               borderRadius: BorderRadius.circular(Dimensions.size10),
             ),
@@ -419,13 +419,13 @@ class BaseWidgets {
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.outline().withOpacity(0.3),
+                color: AppColors.outline().withValues(alpha:0.3),
               ),
               borderRadius: BorderRadius.circular(Dimensions.size10),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.outline().withOpacity(0.3),
+                color: AppColors.outline().withValues(alpha:0.3),
               ),
               borderRadius: BorderRadius.circular(Dimensions.size10),
             ),
@@ -445,7 +445,7 @@ class BaseWidgets {
             ),
             suffixIcon: Icon(
               Icons.keyboard_arrow_down,
-              color: AppColors.onSurface().withOpacity(0.5),
+              color: AppColors.onSurface().withValues(alpha:0.5),
             ),
             isDense: isDense,
           ),
@@ -497,11 +497,14 @@ class BaseWidgets {
             Radius.circular(Dimensions.size10),
           ),
           border: Border.all(
-            color: AppColors.outline().withOpacity(0.3),
+            color: AppColors.outline().withValues(alpha:0.3),
           ),
-          color: (value ?? false) ? AppColors.primaryContainer().withOpacity(0.2) : null,
+          color: (value ?? false) ? AppColors.primaryContainer().withValues(alpha:0.2) : null,
         ),
-        padding: EdgeInsets.all(Dimensions.size10),
+        padding: EdgeInsets.symmetric(
+          vertical: Dimensions.size5,
+          horizontal: Dimensions.size10,
+        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -569,9 +572,9 @@ class BaseWidgets {
                         Radius.circular(Dimensions.size5),
                       ),
                       border: Border.all(
-                        color: AppColors.outline().withOpacity(0.3),
+                        color: AppColors.outline().withValues(alpha:0.3),
                       ),
-                      color: (radioItem.option == value) ? AppColors.primaryContainer().withOpacity(0.5) : null,
+                      color: (radioItem.option == value) ? AppColors.primaryContainer().withValues(alpha:0.5) : null,
                     ),
                     padding: EdgeInsets.all(Dimensions.size10),
                     child: Row(
@@ -617,7 +620,7 @@ class BaseWidgets {
         children: [
           Lottie.asset(
             "assets/lottie/loading_clock.json",
-            frameRate: FrameRate(60),
+            frameRate: const FrameRate(60),
             width: Dimensions.size100 * 2,
             repeat: true,
           ),
@@ -644,7 +647,7 @@ class BaseWidgets {
         children: [
           Lottie.asset(
             "assets/lottie/loading_fail.json",
-            frameRate: FrameRate(60),
+            frameRate: const FrameRate(60),
             width: Dimensions.size100 * 3,
             repeat: true,
           ),
@@ -683,7 +686,7 @@ class BaseWidgets {
         children: [
           Lottie.asset(
             "assets/lottie/no_data.json",
-            frameRate: FrameRate(60),
+            frameRate: const FrameRate(60),
             width: Dimensions.size100 * 3,
             repeat: true,
           ),

@@ -6,6 +6,7 @@ import "package:base/src/app_colors.dart";
 import "package:base/src/base_overlays.dart";
 import "package:base/src/base_preferences.dart";
 import "package:base/src/base_side_sheet.dart";
+import "package:base/src/base_widgets.dart";
 import "package:base/src/dimensions.dart";
 import "package:base/src/navigators.dart";
 import "package:basic_utils/basic_utils.dart";
@@ -22,6 +23,7 @@ class BaseSheets {
     required String title,
     required List<SpinnerItem> spinnerItems,
     required void Function(SpinnerItem selectedItem) onSelected,
+    BuildContext? context,
   }) async {
     TextEditingController textEditingController = TextEditingController();
 
@@ -29,91 +31,161 @@ class BaseSheets {
 
     filteredSpinnerItems.addAll(spinnerItems);
 
-    return await BaseSideSheet.right(
-      title: title,
-      body: StatefulBuilder(
-        builder: (BuildContext context, setState) {
-          return Column(
-            children: [
-              Container(
-                color: AppColors.primaryContainer().withOpacity(0.2),
-                padding: EdgeInsets.symmetric(
-                  vertical: Dimensions.size20,
-                  horizontal: Dimensions.size20,
-                ),
-                child: TextField(
-                  controller: textEditingController,
-                  textInputAction: TextInputAction.search,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    filled: true,
-                    prefixIcon: const Icon(
-                      Icons.search,
+    Widget body() {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Scaffold(
+            body: SafeArea(
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(
+                      Dimensions.size15,
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                        Dimensions.size10,
-                      ),
-                      borderSide: BorderSide.none,
-                    ),
-                    hintText: el.tr("search"),
-                  ),
-                  onChanged: (String value) {
-                    setState(() {
-                      filteredSpinnerItems.clear();
-
-                      if (StringUtils.isNotNullOrEmpty(textEditingController.text)) {
-                        for (SpinnerItem spinnerItem in spinnerItems) {
-                          if (spinnerItem.description.toLowerCase().contains(textEditingController.text.toLowerCase(),)) {
-                            filteredSpinnerItems.add(spinnerItem);
-                          }
-                        }
-                      } else {
-                        filteredSpinnerItems.addAll(spinnerItems);
-                      }
-                    });
-                  },
-                ),
-              ),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: filteredSpinnerItems.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    SpinnerItem spinnerItem = filteredSpinnerItems[index];
-
-                    return ListTile(
-                      onTap: () {
-                        Navigators.pop();
-
-                        onSelected(spinnerItem);
-                      },
-                      title: Text(
-                        spinnerItem.description,
-                        style: TextStyle(
-                          color: spinnerItem.selected ? AppColors.primary() : AppColors.onBackground(),
-                          fontWeight: spinnerItem.selected ? FontWeight.bold : FontWeight.normal,
+                    decoration: BoxDecoration(
+                      color: AppColors.surface(),
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 0.2,
+                          color: AppColors.outline(),
                         ),
                       ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider(
-                      height: 0,
-                    );
-                  },
-                ),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigators.pop(context: context);
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back,
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  left: Dimensions.size5,
+                                ),
+                                child: Text(
+                                  title,
+                                  style: TextStyle(
+                                    fontSize: Dimensions.text16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: Dimensions.size10),
+                        TextField(
+                          controller: textEditingController,
+                          textInputAction: TextInputAction.search,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            hintText: el.tr("search"),
+                            hintStyle: TextStyle(
+                              color: AppColors.onSurface().withValues(alpha:0.5),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: AppColors.onSurface().withValues(alpha:0.5),
+                            ),
+                            filled: true,
+                            fillColor: AppColors.backgroundSurface(),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.outline().withValues(alpha:0.3),
+                              ),
+                              borderRadius: BorderRadius.circular(Dimensions.size10),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.outline().withValues(alpha:0.3),
+                              ),
+                              borderRadius: BorderRadius.circular(Dimensions.size10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.outline().withValues(alpha:0.3),
+                              ),
+                              borderRadius: BorderRadius.circular(Dimensions.size10),
+                            ),
+                          ),
+                          onChanged: (String value) {
+                            setState(() {
+                              filteredSpinnerItems.clear();
+
+                              if (StringUtils.isNotNullOrEmpty(textEditingController.text)) {
+                                for (SpinnerItem spinnerItem in spinnerItems) {
+                                  if (spinnerItem.description.toLowerCase().contains(textEditingController.text.toLowerCase(),)) {
+                                    filteredSpinnerItems.add(spinnerItem);
+                                  }
+                                }
+                              } else {
+                                filteredSpinnerItems.addAll(spinnerItems);
+                              }
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: filteredSpinnerItems.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        SpinnerItem spinnerItem = filteredSpinnerItems[index];
+
+                        return ListTile(
+                          onTap: () {
+                            Navigators.pop(context: context);
+
+                            onSelected(spinnerItem);
+                          },
+                          title: Text(
+                            spinnerItem.description,
+                            style: TextStyle(
+                              color: spinnerItem.selected ? AppColors.primary() : AppColors.onBackground(),
+                              fontWeight: spinnerItem.selected ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Divider(
+                          height: 0,
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           );
         },
-      ),
-    );
+      );
+    }
+
+    if (context != null) {
+      return Navigators.push(
+        body(),
+        context: context,
+      );
+    } else {
+      return await BaseSideSheet.rightFlow(
+        initialBody: body(),
+      );
+    }
   }
 
   static Future<dynamic> checkable({
     required String title,
     required List<SpinnerItem> spinnerItems,
     required void Function(List<SpinnerItem> selectedItems) onSelected,
+    BuildContext? context,
   }) async {
     TextEditingController textEditingController = TextEditingController();
 
@@ -123,145 +195,202 @@ class BaseSheets {
 
     bool selectedAll = !spinnerItems.any((element) => !element.selected);
 
-    return await BaseSideSheet.right(
-      title: title,
-      body: StatefulBuilder(
-        builder: (BuildContext context, setState) {
-          return Column(
-            children: [
-              Container(
-                color: AppColors.primaryContainer().withOpacity(0.2),
-                padding: EdgeInsets.all(Dimensions.size20),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: textEditingController,
-                        textInputAction: TextInputAction.search,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          filled: true,
-                          prefixIcon: const Icon(
-                            Icons.search,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                              Dimensions.size10,
+    Widget body() {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Scaffold(
+            body: SafeArea(
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(
+                      Dimensions.size15,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface(),
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 0.2,
+                          color: AppColors.outline(),
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigators.pop(context: context);
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back,
+                              ),
                             ),
-                            borderSide: BorderSide.none,
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                  left: Dimensions.size5,
+                                ),
+                                child: Text(
+                                  title,
+                                  style: TextStyle(
+                                    fontSize: Dimensions.text16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                left: Dimensions.size15,
+                              ),
+                              child: BaseWidgets.check(
+                                label: el.tr("select_all"),
+                                value: selectedAll,
+                                readonly: false,
+                                onChanged: (value) {
+                                  selectedAll = !selectedAll;
+
+                                  for (SpinnerItem spinnerItem in spinnerItems) {
+                                    spinnerItem.selected = selectedAll;
+                                  }
+
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: Dimensions.size10),
+                        TextField(
+                          controller: textEditingController,
+                          textInputAction: TextInputAction.search,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            hintText: el.tr("search"),
+                            hintStyle: TextStyle(
+                              color: AppColors.onSurface().withValues(alpha:0.5),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: AppColors.onSurface().withValues(alpha:0.5),
+                            ),
+                            filled: true,
+                            fillColor: AppColors.backgroundSurface(),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.outline().withValues(alpha:0.3),
+                              ),
+                              borderRadius: BorderRadius.circular(Dimensions.size10),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.outline().withValues(alpha:0.3),
+                              ),
+                              borderRadius: BorderRadius.circular(Dimensions.size10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColors.outline().withValues(alpha:0.3),
+                              ),
+                              borderRadius: BorderRadius.circular(Dimensions.size10),
+                            ),
                           ),
-                          hintText: el.tr("search"),
-                        ),
-                        onChanged: (String value) {
-                          setState(() {
-                            filteredSpinnerItems.clear();
+                          onChanged: (String value) {
+                            setState(() {
+                              filteredSpinnerItems.clear();
 
-                            if (StringUtils.isNotNullOrEmpty(textEditingController.text)) {
-                              for (SpinnerItem spinnerItem in spinnerItems) {
-                                if (spinnerItem.description.toLowerCase().contains(textEditingController.text.toLowerCase(),)) {
-                                  filteredSpinnerItems.add(spinnerItem);
+                              if (StringUtils.isNotNullOrEmpty(textEditingController.text)) {
+                                for (SpinnerItem spinnerItem in spinnerItems) {
+                                  if (spinnerItem.description.toLowerCase().contains(textEditingController.text.toLowerCase(),)) {
+                                    filteredSpinnerItems.add(spinnerItem);
+                                  }
                                 }
+                              } else {
+                                filteredSpinnerItems.addAll(spinnerItems);
                               }
-                            } else {
-                              filteredSpinnerItems.addAll(spinnerItems);
-                            }
-                          });
-                        },
-                      ),
-                    ),
-                    SizedBox(width: Dimensions.size20),
-                    SizedBox(
-                      width: Dimensions.size20,
-                      height: Dimensions.size20,
-                      child: Checkbox(
-                        value: selectedAll,
-                        onChanged: (value) {
-                          selectedAll = !selectedAll;
-
-                          for (SpinnerItem spinnerItem in spinnerItems) {
-                            spinnerItem.selected = selectedAll;
-                          }
-
-                          setState(() {});
-                        },
-                      ),
-                    ),
-                    SizedBox(width: Dimensions.size10),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: filteredSpinnerItems.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    SpinnerItem spinnerItem = filteredSpinnerItems[index];
-
-                    return CheckboxListTile(
-                      value: spinnerItem.selected,
-                      onChanged: (value) {
-                        setState(() {
-                          spinnerItem.selected = value ?? false;
-                        });
-                      },
-                      title: Text(
-                        spinnerItem.description,
-                        style: TextStyle(
-                          color: spinnerItem.selected ? AppColors.primary() : AppColors.onBackground(),
-                          fontWeight: spinnerItem.selected ? FontWeight.bold : FontWeight.normal,
+                            });
+                          },
                         ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider(
-                      height: 0,
-                    );
-                  },
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: Dimensions.size20,
-                  vertical: Dimensions.size15,
-                ),
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                      width: 0.2,
-                      color: AppColors.outline(),
+                      ],
                     ),
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    FilledButton(
-                      onPressed: () async {
-                        onSelected(spinnerItems.where((element) => element.selected).toList());
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: filteredSpinnerItems.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        SpinnerItem spinnerItem = filteredSpinnerItems[index];
 
-                        Navigators.pop();
+                        return CheckboxListTile(
+                          value: spinnerItem.selected,
+                          onChanged: (value) {
+                            setState(() {
+                              spinnerItem.selected = value ?? false;
+                            });
+                          },
+                          title: Text(
+                            spinnerItem.description,
+                            style: TextStyle(
+                              color: spinnerItem.selected ? AppColors.primary() : AppColors.onBackground(),
+                              fontWeight: spinnerItem.selected ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          ),
+                        );
                       },
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.primary(),
-                        foregroundColor: AppColors.onPrimary(),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(Dimensions.size5)),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: Dimensions.size10,
-                          horizontal: Dimensions.size10,
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Divider(
+                          height: 0,
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Dimensions.size20,
+                      vertical: Dimensions.size15,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: 0.2,
+                          color: AppColors.outline(),
                         ),
                       ),
-                      child: Text(el.tr("apply")),
                     ),
-                  ],
-                ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        FilledButton.icon(
+                          onPressed: () async {
+                            onSelected(spinnerItems.where((element) => element.selected).toList());
+
+                            Navigators.pop();
+                          },
+                          label: Text(el.tr("save")),
+                          icon: const Icon(Icons.save),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           );
         },
-      ),
-    );
+      );
+    }
+
+    if (context != null) {
+      return Navigators.push(
+        body(),
+        context: context,
+      );
+    } else {
+      return await BaseSideSheet.rightFlow(
+        initialBody: body(),
+      );
+    }
   }
 
   static Future<dynamic> menu({
@@ -292,12 +421,12 @@ class BaseSheets {
             } : null,
             leading: menuItem.iconData != null ? Icon(
               menuItem.iconData,
-              color: menuItem.onTap != null ? AppColors.onBackground() : AppColors.onBackground().withOpacity(0.3),
+              color: menuItem.onTap != null ? AppColors.onBackground() : AppColors.onBackground().withValues(alpha:0.3),
             ) : null,
             title: Text(
               menuItem.title,
               style: TextStyle(
-                color: menuItem.onTap != null ? AppColors.onBackground() : AppColors.onBackground().withOpacity(0.3),
+                color: menuItem.onTap != null ? AppColors.onBackground() : AppColors.onBackground().withValues(alpha:0.3),
                 fontWeight: FontWeight.bold,
                 fontSize: Dimensions.text16,
               ),

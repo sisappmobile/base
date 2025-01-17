@@ -1,6 +1,7 @@
 library base;
 
 export "src/app_colors.dart";
+export "src/attachments.dart";
 export "src/base_dialogs.dart";
 export "src/base_encoding_interceptor.dart";
 export "src/base_enums.dart";

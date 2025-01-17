@@ -7,6 +7,7 @@ import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:jiffy/jiffy.dart";
 import "package:syncfusion_flutter_datepicker/datepicker.dart";
+import "package:easy_localization/easy_localization.dart" as el;
 
 class BaseDialogs {
   static Future<void> message({
@@ -30,7 +31,7 @@ class BaseDialogs {
       if (showButton) {
         actions.add(
           TextButton(
-            child: Text(dismiss ?? "Mengerti"),
+            child: Text(dismiss ?? el.tr("got_it")),
             onPressed: () => Navigator.of(Get.context!).pop(),
           ),
         );
@@ -77,7 +78,9 @@ class BaseDialogs {
             content: content,
             actions: [
               TextButton(
-                child: Text(negative ?? "Tidak"),
+                style: TextButton.styleFrom(
+                  foregroundColor: AppColors.error(),
+                ),
                 onPressed: () {
                   Navigator.of(buildContext).pop();
 
@@ -85,9 +88,14 @@ class BaseDialogs {
                     negativeCallback.call();
                   }
                 },
+                child: Text(negative ?? el.tr("no")),
               ),
-              TextButton(
-                child: Text(positive ?? "Iya"),
+              FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.successContainer(),
+                  foregroundColor: AppColors.onSuccessContainer(),
+                ),
+                child: Text(positive ?? el.tr("yes")),
                 onPressed: () {
                   Navigator.of(buildContext).pop();
 
