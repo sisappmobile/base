@@ -21,6 +21,10 @@ dependencies:
   video_player: 2.8.3
   pattern_formatter: 4.0.0
   file_picker: 8.1.7
+  image_picker: 1.0.6
+  smooth_corner: 1.1.1
+  collection: 1.19.0
+  dotted_border: 2.1.0
 
 dev_dependencies:
   flutter_test:

@@ -92,8 +92,8 @@ class BaseDialogs {
               ),
               FilledButton(
                 style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.successContainer(),
-                  foregroundColor: AppColors.onSuccessContainer(),
+                  backgroundColor: AppColors.materialContainer(Colors.green),
+                  foregroundColor: AppColors.onMaterialContainer(Colors.green),
                 ),
                 child: Text(positive ?? el.tr("yes")),
                 onPressed: () {

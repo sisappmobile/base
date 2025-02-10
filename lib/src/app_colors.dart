@@ -56,6 +56,14 @@ class AppColors {
     }
   }
 
+  static Color surfaceTint() {
+    if (darkMode()) {
+      return darkColorScheme.surfaceTint;
+    } else {
+      return lightColorScheme.surfaceTint;
+    }
+  }
+
   static Color onPrimary() {
     if (darkMode()) {
       return darkColorScheme.onPrimary;
@@ -152,14 +160,6 @@ class AppColors {
     }
   }
 
-  static Color errorContainer() {
-    if (darkMode()) {
-      return darkColorScheme.errorContainer;
-    } else {
-      return lightColorScheme.errorContainer;
-    }
-  }
-
   static Color onError() {
     if (darkMode()) {
       return darkColorScheme.onError;
@@ -168,27 +168,19 @@ class AppColors {
     }
   }
 
+  static Color errorContainer() {
+    if (darkMode()) {
+      return darkColorScheme.errorContainer;
+    } else {
+      return lightColorScheme.errorContainer;
+    }
+  }
+
   static Color onErrorContainer() {
     if (darkMode()) {
       return darkColorScheme.onErrorContainer;
     } else {
       return lightColorScheme.onErrorContainer;
-    }
-  }
-
-  static Color background() {
-    if (darkMode()) {
-      return darkColorScheme.surface;
-    } else {
-      return lightColorScheme.surface;
-    }
-  }
-
-  static Color onBackground() {
-    if (darkMode()) {
-      return darkColorScheme.onSurface;
-    } else {
-      return lightColorScheme.onSurface;
     }
   }
 
@@ -208,14 +200,6 @@ class AppColors {
     }
   }
 
-  static Color surfaceVariant() {
-    if (darkMode()) {
-      return darkColorScheme.surfaceContainerHighest;
-    } else {
-      return lightColorScheme.surfaceContainerHighest;
-    }
-  }
-
   static Color onSurfaceVariant() {
     if (darkMode()) {
       return darkColorScheme.onSurfaceVariant;
@@ -232,11 +216,27 @@ class AppColors {
     }
   }
 
-  static Color onInverseSurface() {
+  static Color outlineVariant() {
     if (darkMode()) {
-      return darkColorScheme.onInverseSurface;
+      return darkColorScheme.outlineVariant;
     } else {
-      return lightColorScheme.onInverseSurface;
+      return lightColorScheme.outlineVariant;
+    }
+  }
+
+  static Color shadow() {
+    if (darkMode()) {
+      return darkColorScheme.shadow;
+    } else {
+      return lightColorScheme.shadow;
+    }
+  }
+
+  static Color scrim() {
+    if (darkMode()) {
+      return darkColorScheme.scrim;
+    } else {
+      return lightColorScheme.scrim;
     }
   }
 
@@ -256,77 +256,158 @@ class AppColors {
     }
   }
 
-  static Color shadow() {
+  static Color primaryFixed() {
     if (darkMode()) {
-      return darkColorScheme.shadow;
+      return darkColorScheme.primaryFixed;
     } else {
-      return lightColorScheme.shadow;
+      return lightColorScheme.primaryFixed;
     }
   }
 
-  static Color surfaceTint() {
+  static Color onPrimaryFixed() {
     if (darkMode()) {
-      return darkColorScheme.surfaceTint;
+      return darkColorScheme.onPrimaryFixed;
     } else {
-      return lightColorScheme.surfaceTint;
+      return lightColorScheme.onPrimaryFixed;
     }
   }
 
-  static Color outlineVariant() {
+  static Color primaryFixedDim() {
     if (darkMode()) {
-      return darkColorScheme.outlineVariant;
+      return darkColorScheme.primaryFixedDim;
     } else {
-      return lightColorScheme.outlineVariant;
+      return lightColorScheme.primaryFixedDim;
     }
   }
 
-  static Color scrim() {
+  static Color onPrimaryFixedVariant() {
     if (darkMode()) {
-      return darkColorScheme.scrim;
+      return darkColorScheme.onPrimaryFixedVariant;
     } else {
-      return lightColorScheme.scrim;
+      return lightColorScheme.onPrimaryFixedVariant;
     }
   }
 
-  static Color success() {
+  static Color secondaryFixed() {
     if (darkMode()) {
-      return Colors.green.shade100;
+      return darkColorScheme.secondaryFixed;
     } else {
-      return Colors.green.shade700;
+      return lightColorScheme.secondaryFixed;
     }
   }
 
-  static Color onSuccess() {
+  static Color onSecondaryFixed() {
     if (darkMode()) {
-      return Colors.green.shade900;
+      return darkColorScheme.onSecondaryFixed;
     } else {
-      return Colors.white;
+      return lightColorScheme.onSecondaryFixed;
     }
   }
 
-  static Color successContainer() {
+  static Color secondaryFixedDim() {
     if (darkMode()) {
-      return Colors.green.shade700;
+      return darkColorScheme.secondaryFixedDim;
     } else {
-      return Colors.green.shade100;
+      return lightColorScheme.secondaryFixedDim;
     }
   }
 
-  static Color onSuccessContainer() {
+  static Color onSecondaryFixedVariant() {
     if (darkMode()) {
-      return Colors.white;
+      return darkColorScheme.onSecondaryFixedVariant;
     } else {
-      return Colors.green.shade900;
+      return lightColorScheme.onSecondaryFixedVariant;
     }
   }
 
-  static Color warning() {
+  static Color tertiaryFixed() {
     if (darkMode()) {
-      return Colors.orange.shade100;
+      return darkColorScheme.tertiaryFixed;
     } else {
-      return Colors.orange.shade700;
+      return lightColorScheme.tertiaryFixed;
     }
   }
+
+  static Color onTertiaryFixed() {
+    if (darkMode()) {
+      return darkColorScheme.onTertiaryFixed;
+    } else {
+      return lightColorScheme.onTertiaryFixed;
+    }
+  }
+
+  static Color tertiaryFixedDim() {
+    if (darkMode()) {
+      return darkColorScheme.tertiaryFixedDim;
+    } else {
+      return lightColorScheme.tertiaryFixedDim;
+    }
+  }
+
+  static Color onTertiaryFixedVariant() {
+    if (darkMode()) {
+      return darkColorScheme.onTertiaryFixedVariant;
+    } else {
+      return lightColorScheme.onTertiaryFixedVariant;
+    }
+  }
+
+  static Color surfaceDim() {
+    if (darkMode()) {
+      return darkColorScheme.surfaceDim;
+    } else {
+      return lightColorScheme.surfaceDim;
+    }
+  }
+
+  static Color surfaceBright() {
+    if (darkMode()) {
+      return darkColorScheme.surfaceBright;
+    } else {
+      return lightColorScheme.surfaceBright;
+    }
+  }
+
+  static Color surfaceContainerLowest() {
+    if (darkMode()) {
+      return darkColorScheme.surfaceContainerLowest;
+    } else {
+      return lightColorScheme.surfaceContainerLowest;
+    }
+  }
+
+  static Color surfaceContainerLow() {
+    if (darkMode()) {
+      return darkColorScheme.surfaceContainerLow;
+    } else {
+      return lightColorScheme.surfaceContainerLow;
+    }
+  }
+
+  static Color surfaceContainer() {
+    if (darkMode()) {
+      return darkColorScheme.surfaceContainer;
+    } else {
+      return lightColorScheme.surfaceContainer;
+    }
+  }
+
+  static Color surfaceContainerHigh() {
+    if (darkMode()) {
+      return darkColorScheme.surfaceContainerHigh;
+    } else {
+      return lightColorScheme.surfaceContainerHigh;
+    }
+  }
+
+  static Color surfaceContainerHighest() {
+    if (darkMode()) {
+      return darkColorScheme.surfaceContainerHighest;
+    } else {
+      return lightColorScheme.surfaceContainerHighest;
+    }
+  }
+
 
   static Color onWarning() {
     if (darkMode()) {

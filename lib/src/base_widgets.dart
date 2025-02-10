@@ -2,15 +2,18 @@
 
 import "package:base/src/app_colors.dart";
 import "package:base/src/base_dialogs.dart";
+import "package:base/src/base_numeric_field.dart";
 import "package:base/src/base_sheets.dart";
+import "package:base/src/base_spinner_field.dart";
+import "package:base/src/base_text_field.dart";
 import "package:base/src/dimensions.dart";
 import "package:basic_utils/basic_utils.dart";
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:image_picker/image_picker.dart";
 import "package:jiffy/jiffy.dart";
 import "package:lottie/lottie.dart";
-import "package:pattern_formatter/pattern_formatter.dart";
 
 class BaseWidgets {
   static Widget text({
@@ -31,98 +34,23 @@ class BaseWidgets {
     FormFieldValidator<String>? validator,
     bool? isDense = false,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Visibility(
-          visible: StringUtils.isNotNullOrEmpty(label),
-          child: Text(
-            label ?? "",
-            style: TextStyle(
-              fontSize: Dimensions.text14,
-            ),
-          ),
-        ),
-        Visibility(
-          visible: StringUtils.isNotNullOrEmpty(label),
-          child: SizedBox(height: Dimensions.size5),
-        ),
-        TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          keyboardType: textInputType,
-          readOnly: readonly,
-          maxLength: maxLength,
-          maxLines: maxLines,
-          maxLengthEnforcement: MaxLengthEnforcement.enforced,
-          buildCounter: ((maxLength ?? 0) > 0) ? (context, {required currentLength, required isFocused, required maxLength}) {
-            if (readonly) {
-              return const SizedBox.shrink();
-            } else {
-              return Text("$currentLength/$maxLength");
-            }
-          } : null,
-          decoration: InputDecoration(
-            isDense: isDense,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.outline().withValues(alpha:0.3),
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.outline().withValues(alpha:0.3),
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.primary(),
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.error(),
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            prefixIcon: prefixIcon,
-            suffixIcon: suffixIcon,
-            suffix: suffix,
-          ),
-          validator: validator ?? (String? value) {
-            if (mandatory) {
-              if (StringUtils.isNullOrEmpty(value)) {
-                return "this_field_is_required".tr();
-              }
-            }
-
-            if (minLength != null) {
-              if ((value ?? "").length < minLength) {
-                return "${"minimum_character_length_is".tr()} $minLength";
-              }
-            }
-
-            if (StringUtils.isNotNullOrEmpty(value)) {
-              if (textInputType != null) {
-                if (textInputType == TextInputType.emailAddress) {
-                  if (!RegExp("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-.]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})\$").hasMatch(value ?? "")) {
-                    return "email_format_is_invalid".tr();
-                  }
-                }
-              }
-            }
-
-            return null;
-          },
-          onSaved: onSaved,
-          onChanged: onChanged,
-        ),
-      ],
+    return BaseTextField(
+      mandatory: mandatory,
+      readonly: readonly,
+      controller: controller,
+      label: label,
+      onSaved: onSaved,
+      onChanged: onChanged,
+      minLength: minLength,
+      maxLength: maxLength,
+      maxLines: maxLines,
+      prefixIcon: prefixIcon,
+      suffixIcon: suffixIcon,
+      suffix: suffix,
+      textInputType: textInputType,
+      obscureText: obscureText,
+      validator: validator,
+      isDense: isDense,
     );
   }
 
@@ -138,92 +66,23 @@ class BaseWidgets {
     Widget? suffixIcon,
     Widget? suffix,
     TextAlign? textAlign = TextAlign.end,
-    FormFieldSetter<String>? onSaved,
+    FormFieldSetter<num>? onSaved,
     ValueChanged<String>? onChanged,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Visibility(
-          visible: StringUtils.isNotNullOrEmpty(label),
-          child: Text(
-            label ?? "",
-            style: TextStyle(
-              fontSize: Dimensions.text14,
-            ),
-          ),
-        ),
-        Visibility(
-          visible: StringUtils.isNotNullOrEmpty(label),
-          child: SizedBox(height: Dimensions.size5),
-        ),
-        TextFormField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          readOnly: readonly,
-          textAlign: textAlign!,
-          enabled: enabled!,
-          inputFormatters: [
-            ThousandsFormatter(
-              allowFraction: true,
-              formatter: NumberFormat.decimalPattern("id_ID"),
-            ),
-          ],
-          decoration: InputDecoration(
-            isDense: isDense,
-            filled: true,
-            fillColor: enabled ? Colors.transparent : AppColors.backgroundSurface(),
-            helperText: helperText,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.outline().withValues(alpha:0.3),
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.outline().withValues(alpha:0.3),
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.primary(),
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.error(),
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.outline().withValues(alpha:0.2),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            prefixIcon: prefixIcon,
-            suffixIcon: suffixIcon,
-            suffix: suffix,
-          ),
-          validator: (String? value) {
-            if (mandatory) {
-              if (StringUtils.isNullOrEmpty(value)) {
-                return "this_field_is_required".tr();
-              }
-            }
-
-            return null;
-          },
-          onChanged: onChanged,
-          onSaved: onSaved,
-        ),
-      ],
+    return BaseNumericField(
+      mandatory: mandatory,
+      readonly: readonly,
+      controller: controller,
+      enabled: enabled!,
+      isDense: isDense!,
+      label: label,
+      helperText: helperText,
+      prefixIcon: prefixIcon,
+      suffixIcon: suffixIcon,
+      suffix: suffix,
+      textAlign: textAlign!,
+      onSaved: onSaved!,
+      onChanged: onChanged,
     );
   }
 
@@ -242,7 +101,9 @@ class BaseWidgets {
         Text(
           label,
           style: TextStyle(
-            fontSize: Dimensions.text14,
+            fontSize: Dimensions.text12,
+            fontWeight: FontWeight.w700,
+            color: AppColors.onSurface().withValues(alpha: 80),
           ),
         ),
         SizedBox(height: Dimensions.size5),
@@ -323,7 +184,9 @@ class BaseWidgets {
         Text(
           label,
           style: TextStyle(
-            fontSize: Dimensions.text14,
+            fontSize: Dimensions.text12,
+            fontWeight: FontWeight.w700,
+            color: AppColors.onSurface().withValues(alpha: 80),
           ),
         ),
         SizedBox(height: Dimensions.size5),
@@ -389,92 +252,20 @@ class BaseWidgets {
   static Widget spinner({
     required bool mandatory,
     required bool readonly,
-    required TextEditingController controller,
-    required dynamic spinnerValue,
     required List<SpinnerItem> spinnerItems,
+    required dynamic value,
     required void Function(SpinnerItem selectedItem) onSelected,
     String? label,
     bool pendingChange = false,
-    bool? isDense = false,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Visibility(
-          visible: StringUtils.isNotNullOrEmpty(label),
-          child: Text(
-            label ?? "",
-            style: TextStyle(
-              fontSize: Dimensions.text14,
-            ),
-          ),
-        ),
-        Visibility(
-          visible: StringUtils.isNotNullOrEmpty(label),
-          child: SizedBox(height: Dimensions.size5),
-        ),
-        TextFormField(
-          controller: controller,
-          readOnly: true,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.outline().withValues(alpha:0.3),
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.outline().withValues(alpha:0.3),
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.primary(),
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.error(),
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            suffixIcon: Icon(
-              Icons.keyboard_arrow_down,
-              color: AppColors.onSurface().withValues(alpha:0.5),
-            ),
-            isDense: isDense,
-          ),
-          validator: (String? value) {
-            if (mandatory) {
-              if (spinnerValue == null) {
-                return "this_field_is_required".tr();
-              }
-            }
-
-            return null;
-          },
-          onTap: !readonly ? () async {
-            spinnerItems.forEach((element) => element.selected = element.identity == spinnerValue);
-
-            await BaseSheets.spinner(
-              title: label ?? "",
-              spinnerItems: spinnerItems,
-              onSelected: (selectedItem) {
-                if (!pendingChange) {
-                  controller.text = selectedItem.selectedDescription ?? selectedItem.description;
-                }
-
-                onSelected(selectedItem);
-              },
-            );
-          } : null,
-        ),
-      ],
+    return BaseSpinnerField(
+        mandatory: mandatory,
+        readonly: readonly,
+        spinnerItems: spinnerItems,
+        value: value,
+        onSelected: onSelected,
+        label: label,
+        pendingChange: pendingChange,
     );
   }
 
@@ -613,6 +404,135 @@ class BaseWidgets {
     );
   }
 
+  static Widget image({
+    String? label,
+    double? width,
+    double? height,
+    required Uint8List? value,
+    required bool readonly,
+    required void Function(Uint8List? newValue) onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Visibility(
+          visible: StringUtils.isNotNullOrEmpty(label),
+          child: Text(
+            label ?? "",
+            style: TextStyle(
+              fontSize: Dimensions.text12,
+              fontWeight: FontWeight.w700,
+              color: AppColors.onSurface().withValues(alpha: 80),
+            ),
+          ),
+        ),
+        Visibility(
+          visible: StringUtils.isNotNullOrEmpty(label),
+          child: SizedBox(height: Dimensions.size5),
+        ),
+        Image.memory(
+          value ?? Uint8List(0),
+          height: width ?? Dimensions.size100,
+          width: height ?? Dimensions.size100,
+          fit: BoxFit.fill,
+          errorBuilder: (context, error, stackTrace) => Container(
+            height: width ?? Dimensions.size100,
+            width: height ?? Dimensions.size100,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(Dimensions.size20),
+              border: Border.all(
+                color: AppColors.outline(),
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(Dimensions.size20),
+              child: SizedBox(
+                height: Dimensions.size100,
+                width: Dimensions.size100,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.image,
+                      size: Dimensions.size30,
+                      color: AppColors.onSurface().withValues(alpha: 0.5),
+                    ),
+                    Text(
+                      "no_image".tr(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: AppColors.onSurface().withValues(alpha: 0.5),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+            return Container(
+              height: width ?? Dimensions.size100,
+              width: height ?? Dimensions.size100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Dimensions.size20),
+                border: Border.all(
+                  color: AppColors.outline(),
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(Dimensions.size20),
+                child: child,
+              ),
+            );
+          },
+        ),
+        SizedBox(height: Dimensions.size10),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: Dimensions.size30,
+              width: Dimensions.size30,
+              child: IconButton.filledTonal(
+                onPressed: !readonly ? () async {
+                  XFile? xFile = await ImagePicker().pickImage(
+                    source: ImageSource.gallery,
+                    imageQuality: 20,
+                  );
+
+                  if (xFile != null) {
+                    Uint8List bytesFile = Uint8List.fromList(await xFile.readAsBytes());
+
+                    onChanged(bytesFile);
+                  }
+                } : null,
+                icon: const Icon(Icons.edit),
+                iconSize: Dimensions.size15,
+              ),
+            ),
+            SizedBox(width: Dimensions.size5),
+            SizedBox(
+              height: Dimensions.size30,
+              width: Dimensions.size30,
+              child: IconButton(
+                onPressed: !readonly ? () async {
+                  onChanged(null);
+                } : null,
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(AppColors.errorContainer()),
+                ),
+                color: AppColors.onErrorContainer(),
+                icon: const Icon(Icons.delete),
+                iconSize: Dimensions.size15,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   static Widget shimmer() {
     return Center(
       child: Column(
@@ -656,7 +576,7 @@ class BaseWidgets {
             style: TextStyle(
               fontSize: Dimensions.text24,
               fontWeight: FontWeight.bold,
-              color: AppColors.onBackground(),
+              color: AppColors.onSurface(),
             ),
             textAlign: TextAlign.center,
           ),
@@ -667,7 +587,7 @@ class BaseWidgets {
             "failed_to_load_data_hint".tr(),
             style: TextStyle(
               fontSize: Dimensions.text16,
-              color: AppColors.onBackground(),
+              color: AppColors.onSurface(),
             ),
             textAlign: TextAlign.center,
           ),
@@ -695,7 +615,7 @@ class BaseWidgets {
             style: TextStyle(
               fontSize: Dimensions.text24,
               fontWeight: FontWeight.bold,
-              color: AppColors.onBackground(),
+              color: AppColors.onSurface(),
             ),
             textAlign: TextAlign.center,
           ),
@@ -706,7 +626,7 @@ class BaseWidgets {
             "no_data_hint".tr(),
             style: TextStyle(
               fontSize: Dimensions.text16,
-              color: AppColors.onBackground(),
+              color: AppColors.onSurface(),
             ),
             textAlign: TextAlign.center,
           ),

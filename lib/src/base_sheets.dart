@@ -148,7 +148,7 @@ class BaseSheets {
                           title: Text(
                             spinnerItem.description,
                             style: TextStyle(
-                              color: spinnerItem.selected ? AppColors.primary() : AppColors.onBackground(),
+                              color: spinnerItem.selected ? AppColors.primary() : AppColors.onSurface(),
                               fontWeight: spinnerItem.selected ? FontWeight.bold : FontWeight.normal,
                             ),
                           ),
@@ -332,7 +332,7 @@ class BaseSheets {
                           title: Text(
                             spinnerItem.description,
                             style: TextStyle(
-                              color: spinnerItem.selected ? AppColors.primary() : AppColors.onBackground(),
+                              color: spinnerItem.selected ? AppColors.primary() : AppColors.onSurface(),
                               fontWeight: spinnerItem.selected ? FontWeight.bold : FontWeight.normal,
                             ),
                           ),
@@ -421,12 +421,12 @@ class BaseSheets {
             } : null,
             leading: menuItem.iconData != null ? Icon(
               menuItem.iconData,
-              color: menuItem.onTap != null ? AppColors.onBackground() : AppColors.onBackground().withValues(alpha:0.3),
+              color: menuItem.onTap != null ? AppColors.onSurface() : AppColors.onSurface().withValues(alpha:0.3),
             ) : null,
             title: Text(
               menuItem.title,
               style: TextStyle(
-                color: menuItem.onTap != null ? AppColors.onBackground() : AppColors.onBackground().withValues(alpha:0.3),
+                color: menuItem.onTap != null ? AppColors.onSurface() : AppColors.onSurface().withValues(alpha:0.3),
                 fontWeight: FontWeight.bold,
                 fontSize: Dimensions.text16,
               ),
