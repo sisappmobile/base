@@ -105,7 +105,6 @@ class BaseTextFieldState extends State<BaseTextField> {
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(
                 horizontal: Dimensions.size5,
-                vertical: Dimensions.size3,
               ),
               child: TextField(
                 controller: widget.controller,
@@ -118,19 +117,22 @@ class BaseTextFieldState extends State<BaseTextField> {
                 buildCounter: (context, {required currentLength, required isFocused, required maxLength}) {
                   return const SizedBox.shrink();
                 },
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
-                  errorBorder: OutlineInputBorder(
+                  errorBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
+                  prefixIcon: widget.prefixIcon,
+                  suffix: widget.suffix,
+                  suffixIcon: widget.suffixIcon,
                 ),
                 onChanged: widget.onChanged ?? (value) {
                   setState(() {
