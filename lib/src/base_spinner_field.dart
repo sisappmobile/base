@@ -46,7 +46,7 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
       enabled: !widget.readonly,
       validator: (value) {
         if (widget.mandatory) {
-          if (value == null) {
+          if (spinnerItem == null) {
             return "this_field_is_required".tr();
           }
         }
@@ -78,15 +78,15 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                   );
                 } : null,
                 customBorder: SmoothRectangleBorder(
-                  borderRadius: BorderRadius.circular(Dimensions.size15),
+                  borderRadius: BorderRadius.circular(12),
                   smoothness: 1,
                 ),
                 child: Ink(
                   width: double.infinity,
-                  height: Dimensions.size55 - Dimensions.size1,
+                  height: 48,
                   decoration: ShapeDecoration(
                     shape: SmoothRectangleBorder(
-                      borderRadius: BorderRadius.circular(Dimensions.size15),
+                      borderRadius: BorderRadius.circular(12),
                       smoothness: 1,
                       side: BorderSide(
                           color: borderColor(field),

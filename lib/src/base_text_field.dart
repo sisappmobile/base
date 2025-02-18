@@ -93,7 +93,7 @@ class BaseTextFieldState extends State<BaseTextField> {
               width: double.infinity,
               decoration: ShapeDecoration(
                 shape: SmoothRectangleBorder(
-                  borderRadius: BorderRadius.circular(Dimensions.size15),
+                  borderRadius: BorderRadius.circular(12),
                   smoothness: 1,
                   side: BorderSide(
                       color: borderColor(field),

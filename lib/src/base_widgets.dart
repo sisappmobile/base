@@ -14,6 +14,7 @@ import "package:flutter/services.dart";
 import "package:image_picker/image_picker.dart";
 import "package:jiffy/jiffy.dart";
 import "package:lottie/lottie.dart";
+import "package:smooth_corner/smooth_corner.dart";
 
 class BaseWidgets {
   static Widget text({
@@ -439,14 +440,20 @@ class BaseWidgets {
             height: width ?? Dimensions.size100,
             width: height ?? Dimensions.size100,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(Dimensions.size20),
-              border: Border.all(
-                color: AppColors.outline(),
+            decoration: ShapeDecoration(
+              shape: SmoothRectangleBorder(
+                borderRadius: BorderRadius.circular(Dimensions.size20),
+                smoothness: 1,
+                side: BorderSide(
+                    color: AppColors.outline(),
+                    width: 1.5
+                ),
               ),
+              color: AppColors.surfaceContainerLowest(),
             ),
-            child: ClipRRect(
+            child: SmoothClipRRect(
               borderRadius: BorderRadius.circular(Dimensions.size20),
+              smoothness: 1,
               child: SizedBox(
                 height: Dimensions.size100,
                 width: Dimensions.size100,
@@ -474,14 +481,24 @@ class BaseWidgets {
             return Container(
               height: width ?? Dimensions.size100,
               width: height ?? Dimensions.size100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.size20),
-                border: Border.all(
-                  color: AppColors.outline(),
+              decoration: ShapeDecoration(
+                shape: SmoothRectangleBorder(
+                  borderRadius: BorderRadius.circular(Dimensions.size20),
+                  smoothness: 1,
+                  side: BorderSide(
+                      color: AppColors.outline(),
+                      width: 1.5
+                  ),
                 ),
+                color: AppColors.surfaceContainerLowest(),
               ),
-              child: ClipRRect(
+              child: SmoothClipRRect(
                 borderRadius: BorderRadius.circular(Dimensions.size20),
+                smoothness: 1,
+                side: BorderSide(
+                    color: AppColors.outline(),
+                    width: 1.5
+                ),
                 child: child,
               ),
             );

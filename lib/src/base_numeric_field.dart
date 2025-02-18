@@ -71,7 +71,7 @@ class BaseNumericFieldState extends State<BaseNumericField> {
               width: double.infinity,
               decoration: ShapeDecoration(
                 shape: SmoothRectangleBorder(
-                  borderRadius: BorderRadius.circular(Dimensions.size15),
+                  borderRadius: BorderRadius.circular(12),
                   smoothness: 1,
                   side: BorderSide(
                       color: borderColor(field),
@@ -83,7 +83,6 @@ class BaseNumericFieldState extends State<BaseNumericField> {
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(
                 horizontal: Dimensions.size5,
-                vertical: Dimensions.size3,
               ),
               child: TextField(
                 controller: widget.controller,
