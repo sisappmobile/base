@@ -23,6 +23,7 @@ class BaseSpinnerField extends StatefulWidget {
     required this.value,
     required this.onSelected,
     this.label,
+    this.defaultDescription,
     this.pendingChange = false,
   });
 

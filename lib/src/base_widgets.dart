@@ -257,6 +257,7 @@ class BaseWidgets {
     required dynamic value,
     required void Function(SpinnerItem selectedItem) onSelected,
     String? label,
+    String? defaultDescription,
     bool pendingChange = false,
   }) {
     return BaseSpinnerField(
@@ -266,6 +267,7 @@ class BaseWidgets {
         value: value,
         onSelected: onSelected,
         label: label,
+        defaultDescription: defaultDescription,
         pendingChange: pendingChange,
     );
   }
