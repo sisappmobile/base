@@ -12,6 +12,7 @@ class BaseSpinnerField extends StatefulWidget {
   final dynamic value;
   final void Function(SpinnerItem selectedItem) onSelected;
   String? label;
+  String? defaultDescription;
   bool pendingChange;
 
   BaseSpinnerField({
@@ -102,7 +103,7 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                     children: [
                       Expanded(
                           child: Text(
-                              spinnerItem?.description ?? "",
+                              spinnerItem?.description ?? widget.defaultDescription ?? "",
                               style: TextStyle(
                                 fontSize: Dimensions.text16,
                               ),
