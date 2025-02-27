@@ -13,7 +13,6 @@ class BaseSpinnerField extends StatefulWidget {
   final void Function(SpinnerItem selectedItem) onSelected;
   String? label;
   String? defaultDescription;
-  bool pendingChange;
 
   BaseSpinnerField({
     super.key,
@@ -24,7 +23,6 @@ class BaseSpinnerField extends StatefulWidget {
     required this.onSelected,
     this.label,
     this.defaultDescription,
-    this.pendingChange = false,
   });
 
   @override
@@ -32,17 +30,10 @@ class BaseSpinnerField extends StatefulWidget {
 }
 
 class BaseSpinnerFieldState extends State<BaseSpinnerField> {
-  SpinnerItem? spinnerItem;
-
-  @override
-  void initState() {
-    spinnerItem = widget.spinnerItems.firstWhereOrNull((element) => element.identity == widget.value);
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    SpinnerItem? spinnerItem = widget.spinnerItems.firstWhereOrNull((element) => element.identity == widget.value);
+
     return FormField<SpinnerItem>(
       initialValue: spinnerItem,
       enabled: !widget.readonly,
@@ -69,10 +60,6 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                     title: widget.label ?? "",
                     spinnerItems: widget.spinnerItems,
                     onSelected: (selectedItem) {
-                      if (!widget.pendingChange) {
-                        spinnerItem = selectedItem;
-                      }
-
                       widget.onSelected(selectedItem);
 
                       setState(() {});
@@ -85,7 +72,7 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                 ),
                 child: Ink(
                   width: double.infinity,
-                  height: 48,
+                  height: Dimensions.size55,
                   decoration: ShapeDecoration(
                     shape: SmoothRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -113,7 +100,7 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                       SizedBox(width: Dimensions.size10),
                       Icon(
                           Icons.arrow_downward,
-                          size: Dimensions.size15,
+                          size: Dimensions.size20,
                       )
                     ],
                   ),
