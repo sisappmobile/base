@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
+import "package:base/base.dart";
 import "package:base/src/app_colors.dart";
 import "package:base/src/base_dialogs.dart";
 import "package:base/src/base_numeric_field.dart";
@@ -551,27 +552,7 @@ class BaseWidgets {
   }
 
   static Widget shimmer() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset(
-            "assets/lottie/loading_clock.json",
-            frameRate: const FrameRate(60),
-            width: Dimensions.size100 * 2,
-            repeat: true,
-          ),
-          Text(
-            "${"loading".tr()}...",
-            style: TextStyle(
-              fontSize: Dimensions.text20,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-    );
+    return CustomShimmer();
   }
 
   static Widget loadingFail() {
