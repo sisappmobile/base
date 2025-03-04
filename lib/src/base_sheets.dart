@@ -560,25 +560,13 @@ class BaseSheets {
     required ImageProvider imageProvider,
   }) async {
     await BaseSideSheet.right(
+      title: el.tr("view_image"),
       body: StatefulBuilder(
         builder: (context, setState) {
-          return Material(
-            child: Container(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.04,
-              ),
-              child: Scaffold(
-                appBar: AppBar(
-                  centerTitle: true,
-                  title: Text(el.tr("view_image")),
-                ),
-                body: PhotoView(
-                  imageProvider: imageProvider,
-                  backgroundDecoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+          return PhotoView(
+            imageProvider: imageProvider,
+            backgroundDecoration: const BoxDecoration(
+              color: Colors.white,
             ),
           );
         },
@@ -596,28 +584,12 @@ class BaseSheets {
     await videoPlayerController.play();
 
     await BaseSideSheet.right(
-      body: StatefulBuilder(
-        builder: (context, setState) {
-          return Material(
-            child: Container(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.04,
-              ),
-              child: Scaffold(
-                appBar: AppBar(
-                  centerTitle: true,
-                  title: Text(el.tr("view_video")),
-                ),
-                body: Center(
-                  child: AspectRatio(
-                    aspectRatio: videoPlayerController.value.aspectRatio,
-                    child: VideoPlayer(videoPlayerController),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
+      title: el.tr("view_video"),
+      body: Center(
+        child: AspectRatio(
+          aspectRatio: videoPlayerController.value.aspectRatio,
+          child: VideoPlayer(videoPlayerController),
+        ),
       ),
     );
   }
