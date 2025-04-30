@@ -91,7 +91,7 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                     children: [
                       Expanded(
                           child: Text(
-                              spinnerItem?.description ?? widget.defaultDescription ?? "",
+                              spinnerItem?.selectedDescription ?? spinnerItem?.description ?? widget.defaultDescription ?? "",
                               style: TextStyle(
                                 fontSize: Dimensions.text16,
                               ),
