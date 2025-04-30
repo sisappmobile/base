@@ -440,6 +440,14 @@ class AppColors {
     }
   }
 
+  static Color warning() {
+    if (darkMode()) {
+      return Colors.orange.shade100;
+    } else {
+      return Colors.orange.shade700;
+    }
+  }
+
   static Color onWarning() {
     if (darkMode()) {
       return Colors.orange.shade900;
