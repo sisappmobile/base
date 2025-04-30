@@ -408,6 +408,37 @@ class AppColors {
     }
   }
 
+  static Color success() {
+    if (darkMode()) {
+      return Colors.green.shade100;
+    } else {
+      return Colors.green.shade700;
+    }
+  }
+
+  static Color onSuccess() {
+    if (darkMode()) {
+      return Colors.green.shade900;
+    } else {
+      return Colors.white;
+    }
+  }
+
+  static Color successContainer() {
+    if (darkMode()) {
+      return Colors.green.shade700;
+    } else {
+      return Colors.green.shade100;
+    }
+  }
+
+  static Color onSuccessContainer() {
+    if (darkMode()) {
+      return Colors.white;
+    } else {
+      return Colors.green.shade900;
+    }
+  }
 
   static Color onWarning() {
     if (darkMode()) {
