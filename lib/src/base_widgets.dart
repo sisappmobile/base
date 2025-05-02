@@ -83,7 +83,7 @@ class BaseWidgets {
       suffixIcon: suffixIcon,
       suffix: suffix,
       textAlign: textAlign!,
-      onSaved: onSaved!,
+      onSaved: onSaved,
       onChanged: onChanged,
     );
   }
