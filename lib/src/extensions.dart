@@ -2,6 +2,10 @@
 
 import "package:flutter/material.dart";
 
+extension StringExtension on String {
+  String truncateTo(int maxLength) => (length <= maxLength) ? this : '${substring(0, maxLength)}...';
+}
+
 extension ColorExtension on Color {
   Color darken([int percent = 10]) {
     assert(1 <= percent && percent <= 100);
