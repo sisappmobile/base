@@ -1,13 +1,6 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import "package:base/base.dart";
-import "package:base/src/app_colors.dart";
-import "package:base/src/base_dialogs.dart";
-import "package:base/src/base_numeric_field.dart";
-import "package:base/src/base_sheets.dart";
-import "package:base/src/base_spinner_field.dart";
-import "package:base/src/base_text_field.dart";
-import "package:base/src/dimensions.dart";
 import "package:basic_utils/basic_utils.dart";
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
@@ -631,6 +624,39 @@ class BaseWidgets {
         ],
       ),
     );
+  }
+
+  static Widget labelValue({
+    required String description,
+    required String value,
+    required bool left,
+    bool expanded = true,
+  }) {
+    Widget widget = Column(
+      crossAxisAlignment: left ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+      children: [
+        Text(
+          description,
+          textAlign: left ? TextAlign.start : TextAlign.end,
+        ),
+        Text(
+          value,
+          textAlign: left ? TextAlign.start : TextAlign.end,
+          style: TextStyle(
+            fontSize: Dimensions.text16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+
+    if (expanded) {
+      return Expanded(
+        child: widget,
+      );
+    } else {
+      return widget;
+    }
   }
 
   static Widget rowColumn({
