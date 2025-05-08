@@ -19,6 +19,7 @@ class BaseNumericField extends StatefulWidget {
   TextAlign textAlign;
   FormFieldSetter<num>? onSaved;
   ValueChanged<String>? onChanged;
+  FormFieldValidator<num>? validator;
 
   BaseNumericField({
     super.key,
@@ -35,6 +36,7 @@ class BaseNumericField extends StatefulWidget {
     this.textAlign = TextAlign.end,
     this.onSaved,
     this.onChanged,
+    this.validator,
   });
 
   @override
@@ -52,7 +54,7 @@ class BaseNumericFieldState extends State<BaseNumericField> {
     return FormField<num>(
       initialValue: tryParse(widget.controller.text),
       enabled: !widget.readonly,
-      validator: (num? value) {
+      validator: widget.validator ?? (num? value) {
         if (widget.mandatory) {
           if (value == null) {
             return "this_field_is_required".tr();

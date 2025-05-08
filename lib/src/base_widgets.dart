@@ -63,6 +63,7 @@ class BaseWidgets {
     TextAlign? textAlign = TextAlign.end,
     FormFieldSetter<num>? onSaved,
     ValueChanged<String>? onChanged,
+    FormFieldValidator<num>? validator,
   }) {
     return BaseNumericField(
       mandatory: mandatory,
@@ -78,6 +79,7 @@ class BaseWidgets {
       textAlign: textAlign!,
       onSaved: onSaved,
       onChanged: onChanged,
+      validator: validator,
     );
   }
 
