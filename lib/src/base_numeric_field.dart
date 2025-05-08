@@ -96,11 +96,14 @@ class BaseNumericFieldState extends State<BaseNumericField> {
                     formatter: NumberFormat.decimalPattern("id_ID"),
                   ),
                 ],
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                  errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                  enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                  focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                  errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                  prefixIcon: widget.prefixIcon,
+                  suffix: widget.suffix,
+                  suffixIcon: widget.suffixIcon,
                 ),
                 onChanged: widget.onChanged ?? (value) {
                   setState(() {
