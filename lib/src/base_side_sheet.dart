@@ -4,6 +4,7 @@ import "package:base/src/navigators.dart";
 import "package:basic_utils/basic_utils.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:smooth_corner/smooth_corner.dart";
 
 class BaseSideSheet {
   static Future<dynamic> left({
@@ -69,69 +70,66 @@ class BaseSideSheet {
         pageBuilder: (context, animation1, animation2) {
           return Align(
             alignment: (rightSide ? Alignment.centerRight : Alignment.centerLeft),
-            child: Material(
-              clipBehavior: Clip.antiAlias,
-              color: Colors.transparent,
-              borderRadius: Dimensions.isMobile() ? BorderRadius.zero : BorderRadius.circular(Dimensions.size20),
-              child: Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  color: AppColors.surface(),
-                  borderRadius: Dimensions.isMobile() ? BorderRadius.zero : BorderRadius.circular(Dimensions.size20),
-                ),
-                margin: Dimensions.isMobile() ? EdgeInsets.zero : EdgeInsets.symmetric(
-                  vertical: Dimensions.size20,
-                  horizontal: Dimensions.size10,
-                ),
-                height: double.infinity,
-                width: Dimensions.isMobile() ? null : (width ?? Dimensions.size100 * 4),
-                child: Scaffold(
-                  body: SafeArea(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(
-                            Dimensions.size10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.surface(),
-                            border: Border(
-                              bottom: BorderSide(
-                                width: 0.2,
-                                color: AppColors.outline(),
-                              ),
+            child: Container(
+              margin: Dimensions.isMobile() ? EdgeInsets.zero : EdgeInsets.symmetric(
+                vertical: Dimensions.size20,
+                horizontal: Dimensions.size10,
+              ),
+              child: SmoothClipRRect(
+                smoothness: 1,
+                borderRadius: Dimensions.isMobile() ? BorderRadius.zero : BorderRadius.circular(Dimensions.size20),
+                side: Dimensions.isMobile() ? BorderSide.none : BorderSide(color: AppColors.outline()),
+                child: SizedBox(
+                  height: double.infinity,
+                  width: Dimensions.isMobile() ? null : (width ?? Dimensions.size100 * 4),
+                  child: Scaffold(
+                    body: SafeArea(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(
+                              Dimensions.size10,
                             ),
-                          ),
-                          child: Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  Navigators.pop();
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_back,
+                            decoration: BoxDecoration(
+                              color: AppColors.surface(),
+                              border: Border(
+                                bottom: BorderSide(
+                                  width: 0.2,
+                                  color: AppColors.outline(),
                                 ),
                               ),
-                              Visibility(
-                                visible: StringUtils.isNotNullOrEmpty(title),
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                    left: Dimensions.size5,
+                            ),
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Navigators.pop();
+                                  },
+                                  icon: const Icon(
+                                    Icons.arrow_back,
                                   ),
-                                  child: Text(
-                                    title ?? "",
-                                    style: TextStyle(
-                                      fontSize: Dimensions.text16,
-                                      fontWeight: FontWeight.bold,
+                                ),
+                                Visibility(
+                                  visible: StringUtils.isNotNullOrEmpty(title),
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      left: Dimensions.size5,
+                                    ),
+                                    child: Text(
+                                      title ?? "",
+                                      style: TextStyle(
+                                        fontSize: Dimensions.text16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Expanded(child: body),
-                      ],
+                          Expanded(child: body),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -166,36 +164,33 @@ class BaseSideSheet {
         pageBuilder: (context, animation1, animation2) {
           return Align(
             alignment: Alignment.centerRight,
-            child: Material(
-              clipBehavior: Clip.antiAlias,
-              color: Colors.transparent,
-              borderRadius: Dimensions.isMobile() ? BorderRadius.zero : BorderRadius.circular(Dimensions.size20),
-              child: Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  color: AppColors.surface(),
-                  borderRadius: Dimensions.isMobile() ? BorderRadius.zero : BorderRadius.circular(Dimensions.size20),
-                ),
-                margin: Dimensions.isMobile() ? EdgeInsets.zero : EdgeInsets.symmetric(
-                  vertical: Dimensions.size20,
-                  horizontal: Dimensions.size10,
-                ),
-                height: double.infinity,
-                width: Dimensions.isMobile() ? null : (width ?? Dimensions.size100 * 4),
-                child: Navigator(
-                  key: Navigators.sideSheetNavigatorState,
-                  initialRoute: "/",
-                  onGenerateRoute: (settings) {
-                    if (settings.name == "/") {
-                      return MaterialPageRoute(
-                        builder: (context) {
-                          return initialBody;
-                        },
-                      );
-                    }
+            child: Container(
+              margin: Dimensions.isMobile() ? EdgeInsets.zero : EdgeInsets.symmetric(
+                vertical: Dimensions.size20,
+                horizontal: Dimensions.size10,
+              ),
+              child: SmoothClipRRect(
+                smoothness: 1,
+                borderRadius: Dimensions.isMobile() ? BorderRadius.zero : BorderRadius.circular(Dimensions.size20),
+                side: Dimensions.isMobile() ? BorderSide.none : BorderSide(color: AppColors.outline()),
+                child: SizedBox(
+                  height: double.infinity,
+                  width: Dimensions.isMobile() ? null : (width ?? Dimensions.size100 * 4),
+                  child: Navigator(
+                    key: Navigators.sideSheetNavigatorState,
+                    initialRoute: "/",
+                    onGenerateRoute: (settings) {
+                      if (settings.name == "/") {
+                        return MaterialPageRoute(
+                          builder: (context) {
+                            return initialBody;
+                          },
+                        );
+                      }
 
-                    return null;
-                  },
+                      return null;
+                    },
+                  ),
                 ),
               ),
             ),
