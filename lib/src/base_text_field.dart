@@ -91,13 +91,13 @@ class BaseTextFieldState extends State<BaseTextField> {
             labelWidget(),
             Container(
               width: double.infinity,
+              height: Dimensions.size55,
               decoration: ShapeDecoration(
                 shape: SmoothRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                   smoothness: 1,
                   side: BorderSide(
                       color: borderColor(field),
-                      width: 1.5
                   ),
                 ),
                 color: AppColors.surfaceContainerLowest(),

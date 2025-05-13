@@ -48,11 +48,18 @@ class BaseSideSheet {
     required Widget initialBody,
     double? width,
   }) async {
-    return _showSideSheetFlow(
-      initialBody: initialBody,
-      width: width,
-      rightSide: true,
-    );
+    if (Navigators.sideSheetNavigatorState.currentContext != null) {
+      return Navigators.push(
+        initialBody,
+        context: Navigators.sideSheetNavigatorState.currentContext!,
+      );
+    } else {
+      return _showSideSheetFlow(
+        initialBody: initialBody,
+        width: width,
+        rightSide: true,
+      );
+    }
   }
 
   static Future<dynamic> _showSideSheet({
@@ -156,7 +163,7 @@ class BaseSideSheet {
     double? width,
   }) async {
     if (Get.context != null) {
-      await showGeneralDialog(
+      return await showGeneralDialog(
         barrierLabel: initialBody.runtimeType.toString(),
         barrierDismissible: true,
         transitionDuration: const Duration(milliseconds: 300),

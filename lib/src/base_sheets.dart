@@ -15,6 +15,7 @@ import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:jiffy/jiffy.dart";
 import "package:photo_view/photo_view.dart";
+import "package:smooth_corner/smooth_corner.dart";
 import "package:syncfusion_flutter_datepicker/datepicker.dart";
 import "package:video_player/video_player.dart";
 
@@ -175,9 +176,16 @@ class BaseSheets {
         context: context,
       );
     } else {
-      return await BaseSideSheet.rightFlow(
-        initialBody: body(),
-      );
+      if (Navigators.sideSheetNavigatorState.currentContext != null) {
+        return Navigators.push(
+          body(),
+          context: Navigators.sideSheetNavigatorState.currentContext,
+        );
+      } else {
+        return await BaseSideSheet.rightFlow(
+          initialBody: body(),
+        );
+      }
     }
   }
 
@@ -387,9 +395,16 @@ class BaseSheets {
         context: context,
       );
     } else {
-      return await BaseSideSheet.rightFlow(
-        initialBody: body(),
-      );
+      if (Navigators.sideSheetNavigatorState.currentContext != null) {
+        return Navigators.push(
+          body(),
+          context: context,
+        );
+      } else {
+        return await BaseSideSheet.rightFlow(
+          initialBody: body(),
+        );
+      }
     }
   }
 
@@ -443,48 +458,58 @@ class BaseSheets {
     required void Function(Jiffy selectedFrom, Jiffy selectedUntil) onSelected,
     int? maxRangeInDays,
   }) async {
-    return await BaseSideSheet.right(
-      title: el.tr("select_period"),
-      body: SafeArea(
-        child: StatefulBuilder(
-          builder: (BuildContext context, setState) {
-            return SfDateRangePicker(
-              view: DateRangePickerView.month,
-              selectionMode: DateRangePickerSelectionMode.range,
-              headerStyle: DateRangePickerHeaderStyle(
-                textAlign: TextAlign.center,
-                backgroundColor: AppColors.surface(),
-              ),
-              backgroundColor: AppColors.surface(),
-              showActionButtons: true,
-              initialDisplayDate: from.dateTime,
-              initialSelectedRange: PickerDateRange(from.dateTime, until.dateTime),
-              onCancel: () {
-                Navigators.pop();
-              },
-              onSubmit: (Object? p0) {
-                if (p0 != null) {
-                  if (p0 is PickerDateRange) {
-                    if (p0.startDate != null && p0.endDate != null) {
-                      if (maxRangeInDays != null && p0.endDate!.difference(p0.startDate!).inDays > maxRangeInDays) {
-                        BaseOverlays.error(message: "${el.tr("the_maximum_period_is")} $maxRangeInDays ${el.tr("days")}");
-                      } else {
-                        onSelected(
-                          Jiffy.parseFromDateTime(p0.startDate!),
-                          Jiffy.parseFromDateTime(p0.endDate!),
-                        );
+    if (Get.context != null) {
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: true,
+        builder: (context) {
+          return Dialog(
+            child: SmoothClipRRect(
+              smoothness: 1,
+              borderRadius: BorderRadius.circular(Dimensions.size20),
+              side: BorderSide(color: AppColors.outline()),
+              child: SizedBox(
+                width: Dimensions.size100 * 4,
+                height: Dimensions.size100 * 4,
+                child: SfDateRangePicker(
+                  view: DateRangePickerView.month,
+                  selectionMode: DateRangePickerSelectionMode.range,
+                  headerStyle: DateRangePickerHeaderStyle(
+                    textAlign: TextAlign.center,
+                    backgroundColor: AppColors.surfaceContainerLowest(),
+                  ),
+                  backgroundColor: AppColors.surfaceContainerLowest(),
+                  showActionButtons: true,
+                  initialDisplayDate: from.dateTime,
+                  initialSelectedRange: PickerDateRange(from.dateTime, until.dateTime),
+                  onCancel: () {
+                    Navigators.pop();
+                  },
+                  onSubmit: (Object? p0) {
+                    if (p0 != null) {
+                      if (p0 is PickerDateRange) {
+                        if (p0.startDate != null && p0.endDate != null) {
+                          if (maxRangeInDays != null && p0.endDate!.difference(p0.startDate!).inDays > maxRangeInDays) {
+                            BaseOverlays.error(message: "${el.tr("the_maximum_period_is")} $maxRangeInDays ${el.tr("days")}");
+                          } else {
+                            onSelected(
+                              Jiffy.parseFromDateTime(p0.startDate!),
+                              Jiffy.parseFromDateTime(p0.endDate!),
+                            );
 
-                        Navigators.pop();
+                            Navigators.pop();
+                          }
+                        }
                       }
                     }
-                  }
-                }
-              },
-            );
-          },
-        ),
-      ),
-    );
+                  },
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 
   static Future<dynamic> date({

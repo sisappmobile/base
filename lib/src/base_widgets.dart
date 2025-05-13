@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import "package:base/base.dart";
+import "package:base/src/base_date_field.dart";
 import "package:basic_utils/basic_utils.dart";
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
@@ -92,77 +93,12 @@ class BaseWidgets {
     void Function(Jiffy newValue)? onSelected,
     bool? isDense = false,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: Dimensions.text12,
-            fontWeight: FontWeight.w700,
-            color: AppColors.onSurface().withValues(alpha: 80),
-          ),
-        ),
-        SizedBox(height: Dimensions.size5),
-        TextFormField(
-          controller: controller,
-          readOnly: true,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.outline().withValues(alpha:0.3),
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.outline().withValues(alpha:0.3),
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.primary(),
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.error(),
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            suffixIcon: const Icon(
-              Icons.event,
-            ),
-            isDense: isDense,
-          ),
-          validator: (String? value) {
-            if (mandatory) {
-              if (jiffy == null) {
-                return "this_field_is_required".tr();
-              }
-            }
-
-            return null;
-          },
-          onTap: !readonly ? () async {
-            await BaseSheets.date(
-              jiffy: jiffy,
-              max: Jiffy.parseFromDateTime(DateTime(2099, 12, 31)),
-              onSelected: (newValue) {
-                controller.text = newValue.format(pattern: "d MMM 'yy");
-
-                if (onSelected != null) {
-                  onSelected(newValue);
-                }
-              },
-            );
-          } : null,
-        ),
-      ],
+    return BaseDateField(
+        mandatory: mandatory,
+        readonly: readonly,
+        value: jiffy,
+        onSelected: onSelected,
+        label: label,
     );
   }
 
@@ -276,22 +212,22 @@ class BaseWidgets {
       onTap: !readonly ? () {
         onChanged(!(value ?? false));
       } : null,
-      borderRadius: BorderRadius.all(
-        Radius.circular(Dimensions.size10),
+      customBorder: SmoothRectangleBorder(
+        smoothness: 1,
+        borderRadius: BorderRadius.circular(Dimensions.size10),
       ),
       child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(Dimensions.size10),
+        decoration: ShapeDecoration(
+          shape: SmoothRectangleBorder(
+            smoothness: 1,
+            borderRadius: BorderRadius.circular(Dimensions.size10),
+            side: BorderSide(color: AppColors.outline()),
           ),
-          border: Border.all(
-            color: AppColors.outline().withValues(alpha:0.3),
-          ),
-          color: (value ?? false) ? AppColors.primaryContainer().withValues(alpha:0.2) : null,
+          color: (value ?? false) ? AppColors.primaryContainer() : AppColors.surfaceContainerLowest(),
         ),
         padding: EdgeInsets.symmetric(
-          vertical: Dimensions.size5,
-          horizontal: Dimensions.size10,
+          vertical: Dimensions.size10,
+          horizontal: Dimensions.size15,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -320,24 +256,38 @@ class BaseWidgets {
   }
 
   static Widget radio<T>({
-    required String label,
     required T value,
     required List<RadioItem<T>> radioItems,
     required bool readonly,
     required void Function(T newValue) onChanged,
+    String? label,
   }) {
+    Widget labelWidget() {
+      if (StringUtils.isNotNullOrEmpty(label)) {
+        return Container(
+          margin: EdgeInsets.only(
+            bottom: Dimensions.size5,
+          ),
+          child: Text(
+            label!,
+            style: TextStyle(
+              fontSize: Dimensions.text12,
+              fontWeight: FontWeight.w700,
+              color: AppColors.onSurface().withValues(alpha: 80),
+            ),
+          ),
+        );
+      }
+
+      return const SizedBox.shrink();
+    }
+
     return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: Dimensions.text14,
-            ),
-          ),
-          SizedBox(height: Dimensions.size5),
+          labelWidget(),
           Wrap(
             direction: Axis.horizontal,
             alignment: WrapAlignment.start,
@@ -355,14 +305,13 @@ class BaseWidgets {
                     Radius.circular(Dimensions.size5),
                   ),
                   child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(Dimensions.size5),
+                    decoration: ShapeDecoration(
+                      shape: SmoothRectangleBorder(
+                        smoothness: 1,
+                        borderRadius: BorderRadius.circular(Dimensions.size10),
+                        side: BorderSide(color: AppColors.outline()),
                       ),
-                      border: Border.all(
-                        color: AppColors.outline().withValues(alpha:0.3),
-                      ),
-                      color: (radioItem.option == value) ? AppColors.primaryContainer().withValues(alpha:0.5) : null,
+                      color: (radioItem.option == value) ? AppColors.primaryContainer() : AppColors.surfaceContainerLowest(),
                     ),
                     padding: EdgeInsets.all(Dimensions.size10),
                     child: Row(
@@ -442,7 +391,6 @@ class BaseWidgets {
                 smoothness: 1,
                 side: BorderSide(
                     color: AppColors.outline(),
-                    width: 1.5
                 ),
               ),
               color: AppColors.surfaceContainerLowest(),
@@ -483,7 +431,6 @@ class BaseWidgets {
                   smoothness: 1,
                   side: BorderSide(
                       color: AppColors.outline(),
-                      width: 1.5
                   ),
                 ),
                 color: AppColors.surfaceContainerLowest(),
@@ -493,7 +440,6 @@ class BaseWidgets {
                 smoothness: 1,
                 side: BorderSide(
                     color: AppColors.outline(),
-                    width: 1.5
                 ),
                 child: child,
               ),

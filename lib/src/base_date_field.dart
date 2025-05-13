@@ -1,45 +1,39 @@
 import 'package:base/base.dart';
 import 'package:basic_utils/basic_utils.dart';
-import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
-class BaseSpinnerField extends StatefulWidget {
+class BaseDateField extends StatefulWidget {
   final bool mandatory;
   final bool readonly;
-  final List<SpinnerItem> spinnerItems;
-  final dynamic value;
-  final void Function(SpinnerItem selectedItem) onSelected;
+  final Jiffy? value;
+  void Function(Jiffy newValue)? onSelected;
   String? label;
-  String? defaultDescription;
 
-  BaseSpinnerField({
+  BaseDateField({
     super.key,
     required this.mandatory,
     required this.readonly,
-    required this.spinnerItems,
     required this.value,
-    required this.onSelected,
+    this.onSelected,
     this.label,
-    this.defaultDescription,
   });
 
   @override
-  State<BaseSpinnerField> createState() => BaseSpinnerFieldState();
+  State<BaseDateField> createState() => BaseDateFieldState();
 }
 
-class BaseSpinnerFieldState extends State<BaseSpinnerField> {
+class BaseDateFieldState extends State<BaseDateField> {
   @override
   Widget build(BuildContext context) {
-    SpinnerItem? spinnerItem = widget.spinnerItems.firstWhereOrNull((element) => element.identity == widget.value);
-
-    return FormField<SpinnerItem>(
-      initialValue: spinnerItem,
+    return FormField<Jiffy>(
+      initialValue: widget.value,
       enabled: !widget.readonly,
       validator: (value) {
         if (widget.mandatory) {
-          if (spinnerItem == null) {
+          if (widget.value == null) {
             return "this_field_is_required".tr();
           }
         }
@@ -54,15 +48,15 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
             Material(
               child: InkWell(
                 onTap: !widget.readonly ? () async {
-                  widget.spinnerItems.forEach((element) => element.selected = element.identity == widget.value);
+                  await BaseSheets.date(
+                    jiffy: widget.value,
+                    max: Jiffy.parseFromDateTime(DateTime(2099, 12, 31)),
+                    onSelected: (newValue) {
+                      if (widget.onSelected != null) {
+                        widget.onSelected!(newValue);
 
-                  await BaseSheets.spinner(
-                    title: widget.label ?? "",
-                    spinnerItems: widget.spinnerItems,
-                    onSelected: (selectedItem) {
-                      widget.onSelected(selectedItem);
-
-                      setState(() {});
+                        setState(() {});
+                      }
                     },
                   );
                 } : null,
@@ -78,7 +72,7 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                       borderRadius: BorderRadius.circular(12),
                       smoothness: 1,
                       side: BorderSide(
-                          color: borderColor(field),
+                        color: borderColor(field),
                       ),
                     ),
                     color: AppColors.surfaceContainerLowest(),
@@ -89,17 +83,17 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                   child: Row(
                     children: [
                       Expanded(
-                          child: Text(
-                              spinnerItem?.selectedDescription ?? spinnerItem?.description ?? widget.defaultDescription ?? "",
-                              style: TextStyle(
-                                fontSize: Dimensions.text16,
-                              ),
-                          )
+                        child: Text(
+                          widget.value?.format(pattern: "d MMM 'yy") ?? "",
+                          style: TextStyle(
+                            fontSize: Dimensions.text16,
+                          ),
+                        ),
                       ),
                       SizedBox(width: Dimensions.size10),
                       Icon(
-                          Icons.arrow_downward,
-                          size: Dimensions.size20,
+                        Icons.event,
+                        size: Dimensions.size20,
                       )
                     ],
                   ),
