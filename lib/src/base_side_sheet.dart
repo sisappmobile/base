@@ -169,34 +169,36 @@ class BaseSideSheet {
         transitionDuration: const Duration(milliseconds: 300),
         context: Get.context!,
         pageBuilder: (context, animation1, animation2) {
-          return Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              margin: Dimensions.isMobile() ? EdgeInsets.zero : EdgeInsets.symmetric(
-                vertical: Dimensions.size20,
-                horizontal: Dimensions.size10,
-              ),
-              child: SmoothClipRRect(
-                smoothness: 1,
-                borderRadius: Dimensions.isMobile() ? BorderRadius.zero : BorderRadius.circular(Dimensions.size20),
-                side: Dimensions.isMobile() ? BorderSide.none : BorderSide(color: AppColors.outline()),
-                child: SizedBox(
-                  height: double.infinity,
-                  width: Dimensions.isMobile() ? null : (width ?? Dimensions.size100 * 4),
-                  child: Navigator(
-                    key: Navigators.sideSheetNavigatorState,
-                    initialRoute: "/",
-                    onGenerateRoute: (settings) {
-                      if (settings.name == "/") {
-                        return MaterialPageRoute(
-                          builder: (context) {
-                            return initialBody;
-                          },
-                        );
-                      }
+          return SafeArea(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                margin: Dimensions.isMobile() ? EdgeInsets.zero : EdgeInsets.symmetric(
+                  vertical: Dimensions.size20,
+                  horizontal: Dimensions.size10,
+                ),
+                child: SmoothClipRRect(
+                  smoothness: 1,
+                  borderRadius: Dimensions.isMobile() ? BorderRadius.zero : BorderRadius.circular(Dimensions.size20),
+                  side: Dimensions.isMobile() ? BorderSide.none : BorderSide(color: AppColors.outline()),
+                  child: SizedBox(
+                    height: double.infinity,
+                    width: Dimensions.isMobile() ? null : (width ?? Dimensions.size100 * 4),
+                    child: Navigator(
+                      key: Navigators.sideSheetNavigatorState,
+                      initialRoute: "/",
+                      onGenerateRoute: (settings) {
+                        if (settings.name == "/") {
+                          return MaterialPageRoute(
+                            builder: (context) {
+                              return initialBody;
+                            },
+                          );
+                        }
 
-                      return null;
-                    },
+                        return null;
+                      },
+                    ),
                   ),
                 ),
               ),
