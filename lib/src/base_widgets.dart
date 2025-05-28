@@ -519,7 +519,6 @@ class BaseWidgets {
                   "${"loading".tr()}...",
                   style: TextStyle(
                     fontSize: Dimensions.text20,
-                    fontWeight: FontWeight.bold,
                     color: AppColors.onSurface(),
                   ),
                   textAlign: TextAlign.center,
