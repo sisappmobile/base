@@ -94,11 +94,11 @@ class BaseWidgets {
     bool? isDense = false,
   }) {
     return BaseDateField(
-        mandatory: mandatory,
-        readonly: readonly,
-        value: jiffy,
-        onSelected: onSelected,
-        label: label,
+      mandatory: mandatory,
+      readonly: readonly,
+      value: jiffy,
+      onSelected: onSelected,
+      label: label,
     );
   }
 
@@ -192,13 +192,13 @@ class BaseWidgets {
     String? defaultDescription,
   }) {
     return BaseSpinnerField(
-        mandatory: mandatory,
-        readonly: readonly,
-        spinnerItems: spinnerItems,
-        value: value,
-        onSelected: onSelected,
-        label: label,
-        defaultDescription: defaultDescription,
+      mandatory: mandatory,
+      readonly: readonly,
+      spinnerItems: spinnerItems,
+      value: value,
+      onSelected: onSelected,
+      label: label,
+      defaultDescription: defaultDescription,
     );
   }
 
@@ -390,7 +390,7 @@ class BaseWidgets {
                 borderRadius: BorderRadius.circular(Dimensions.size20),
                 smoothness: 1,
                 side: BorderSide(
-                    color: AppColors.outline(),
+                  color: AppColors.outline(),
                 ),
               ),
               color: AppColors.surfaceContainerLowest(),
@@ -430,7 +430,7 @@ class BaseWidgets {
                   borderRadius: BorderRadius.circular(Dimensions.size20),
                   smoothness: 1,
                   side: BorderSide(
-                      color: AppColors.outline(),
+                    color: AppColors.outline(),
                   ),
                 ),
                 color: AppColors.surfaceContainerLowest(),
@@ -439,7 +439,7 @@ class BaseWidgets {
                 borderRadius: BorderRadius.circular(Dimensions.size20),
                 smoothness: 1,
                 side: BorderSide(
-                    color: AppColors.outline(),
+                  color: AppColors.outline(),
                 ),
                 child: child,
               ),
@@ -501,7 +501,9 @@ class BaseWidgets {
             padding: EdgeInsets.symmetric(
               horizontal: Dimensions.size20,
             ),
-            height: constraints.maxHeight,
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
             alignment: Alignment.center,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -530,8 +532,11 @@ class BaseWidgets {
     );
   }
 
-  static Widget loadingFail() {
-    return LayoutBuilder(
+  static Widget loadingFail({
+    RefreshCallback? onRefresh,
+  }) {
+    Widget body() {
+      return LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -539,7 +544,9 @@ class BaseWidgets {
               padding: EdgeInsets.symmetric(
                 horizontal: Dimensions.size20,
               ),
-              height: constraints.maxHeight,
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
               alignment: Alignment.center,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -576,56 +583,81 @@ class BaseWidgets {
             ),
           );
         },
-    );
+      );
+    }
+
+    if (onRefresh != null) {
+      return RefreshIndicator(
+        onRefresh: onRefresh,
+        child: body(),
+      );
+    } else {
+      return body();
+    }
   }
 
-  static Widget noData() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: Dimensions.size20,
-              ),
-              height: constraints.maxHeight,
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Lottie.asset(
-                    "assets/lottie/no_data.json",
-                    frameRate: const FrameRate(60),
-                    width: Dimensions.size100 * 2,
-                    repeat: false,
-                  ),
-                  Text(
-                    "no_data".tr(),
-                    style: TextStyle(
-                      fontSize: Dimensions.text20,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.onSurface(),
+  static Widget noData({
+    RefreshCallback? onRefresh,
+  }) {
+    Widget body() {
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Dimensions.size20,
+                ),
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset(
+                      "assets/lottie/no_data.json",
+                      frameRate: const FrameRate(60),
+                      width: Dimensions.size100 * 2,
+                      repeat: false,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: Dimensions.size10,
-                  ),
-                  Text(
-                    "no_data_hint".tr(),
-                    style: TextStyle(
-                      fontSize: Dimensions.text14,
-                      fontWeight: FontWeight.w300,
-                      color: AppColors.onSurface(),
+                    Text(
+                      "no_data".tr(),
+                      style: TextStyle(
+                        fontSize: Dimensions.text20,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.onSurface(),
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            )
-        );
-      },
-    );
+                    SizedBox(
+                      height: Dimensions.size10,
+                    ),
+                    Text(
+                      "no_data_hint".tr(),
+                      style: TextStyle(
+                        fontSize: Dimensions.text14,
+                        fontWeight: FontWeight.w300,
+                        color: AppColors.onSurface(),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              )
+          );
+        },
+      );
+    }
+
+    if (onRefresh != null) {
+      return RefreshIndicator(
+        onRefresh: onRefresh,
+        child: body(),
+      );
+    } else {
+      return body();
+    }
   }
 
   static Widget labelValue({
