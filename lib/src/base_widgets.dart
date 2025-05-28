@@ -493,84 +493,138 @@ class BaseWidgets {
   }
 
   static Widget shimmer() {
-    return CustomShimmer();
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: Dimensions.size20,
+            ),
+            height: constraints.maxHeight,
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Lottie.asset(
+                  "assets/lottie/loading.json",
+                  frameRate: const FrameRate(60),
+                  height: Dimensions.size100,
+                  width: Dimensions.size100,
+                  repeat: true,
+                ),
+                Text(
+                  "${"loading".tr()}...",
+                  style: TextStyle(
+                    fontSize: Dimensions.text20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.onSurface(),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   static Widget loadingFail() {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: Dimensions.size20,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset(
-            "assets/lottie/loading_fail.json",
-            frameRate: const FrameRate(60),
-            width: Dimensions.size100 * 3,
-            repeat: true,
-          ),
-          Text(
-            "failed_to_load_data".tr(),
-            style: TextStyle(
-              fontSize: Dimensions.text24,
-              fontWeight: FontWeight.bold,
-              color: AppColors.onSurface(),
+    return LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: Dimensions.size20,
+              ),
+              height: constraints.maxHeight,
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Lottie.asset(
+                    "assets/lottie/loading_fail.json",
+                    frameRate: const FrameRate(60),
+                    width: Dimensions.size100 * 2,
+                    repeat: false,
+                  ),
+                  Text(
+                    "failed_to_load_data".tr(),
+                    style: TextStyle(
+                      fontSize: Dimensions.text20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.onSurface(),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: Dimensions.size10,
+                  ),
+                  Text(
+                    "failed_to_load_data_hint".tr(),
+                    style: TextStyle(
+                      fontSize: Dimensions.text14,
+                      fontWeight: FontWeight.w300,
+                      color: AppColors.onSurface(),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: Dimensions.size10,
-          ),
-          Text(
-            "failed_to_load_data_hint".tr(),
-            style: TextStyle(
-              fontSize: Dimensions.text16,
-              color: AppColors.onSurface(),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+          );
+        },
     );
   }
 
   static Widget noData() {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: Dimensions.size20,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset(
-            "assets/lottie/no_data.json",
-            frameRate: const FrameRate(60),
-            width: Dimensions.size100 * 3,
-            repeat: true,
-          ),
-          Text(
-            "no_data".tr(),
-            style: TextStyle(
-              fontSize: Dimensions.text24,
-              fontWeight: FontWeight.bold,
-              color: AppColors.onSurface(),
-            ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: Dimensions.size10,
-          ),
-          Text(
-            "no_data_hint".tr(),
-            style: TextStyle(
-              fontSize: Dimensions.text16,
-              color: AppColors.onSurface(),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: Dimensions.size20,
+              ),
+              height: constraints.maxHeight,
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Lottie.asset(
+                    "assets/lottie/no_data.json",
+                    frameRate: const FrameRate(60),
+                    width: Dimensions.size100 * 2,
+                    repeat: false,
+                  ),
+                  Text(
+                    "no_data".tr(),
+                    style: TextStyle(
+                      fontSize: Dimensions.text20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.onSurface(),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: Dimensions.size10,
+                  ),
+                  Text(
+                    "no_data_hint".tr(),
+                    style: TextStyle(
+                      fontSize: Dimensions.text14,
+                      fontWeight: FontWeight.w300,
+                      color: AppColors.onSurface(),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            )
+        );
+      },
     );
   }
 
