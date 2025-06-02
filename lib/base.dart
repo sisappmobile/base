@@ -1,7 +1,12 @@
 library base;
 
+export "src/widget/base_app_bar.dart";
+export "src/widget/base_bottom_bar.dart";
+export "src/widget/base_scaffold.dart";
+
 export "src/app_colors.dart";
 export "src/attachments.dart";
+export "src/base_date_field.dart";
 export "src/base_dialogs.dart";
 export "src/base_encoding_interceptor.dart";
 export "src/base_enums.dart";
@@ -9,6 +14,7 @@ export "src/base_http_overrides.dart";
 export "src/base_log_interceptor.dart";
 export "src/base_numeric_field.dart";
 export "src/base_overlays.dart";
+export "src/base_popup_menus.dart";
 export "src/base_preferences.dart";
 export "src/base_scroll_behavior.dart";
 export "src/base_sheets.dart";
@@ -26,4 +32,3 @@ export "src/locations.dart";
 export "src/navigators.dart";
 export "src/record_page.dart";
 export "src/record_preview_page.dart";
-export "src/base_popup_menus.dart";

@@ -1,7 +1,4 @@
-import "package:base/src/app_colors.dart";
-import "package:base/src/base_app_bar.dart";
-import "package:base/src/dimensions.dart";
-import "package:base/src/navigators.dart";
+import "package:base/base.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:smooth_corner/smooth_corner.dart";
@@ -89,12 +86,11 @@ class BaseSideSheet {
                     width: Dimensions.isMobile() ? null : (width ?? Dimensions.size100 * 4),
                     child: SafeArea(
                       child: Scaffold(
-                        body: Column(
-                          children: [
-                            BaseAppBar(title: title ?? ""),
-                            Expanded(child: body),
-                          ],
+                        appBar: BaseAppBar(
+                            context: context,
+                            name: title ?? "",
                         ),
+                        body: body,
                       ),
                     ),
                   ),
