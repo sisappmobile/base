@@ -1,7 +1,7 @@
 import "package:base/src/app_colors.dart";
+import "package:base/src/base_app_bar.dart";
 import "package:base/src/dimensions.dart";
 import "package:base/src/navigators.dart";
-import "package:basic_utils/basic_utils.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:smooth_corner/smooth_corner.dart";
@@ -75,67 +75,26 @@ class BaseSideSheet {
         transitionDuration: const Duration(milliseconds: 300),
         context: Get.context!,
         pageBuilder: (context, animation1, animation2) {
-          return Align(
-            alignment: (rightSide ? Alignment.centerRight : Alignment.centerLeft),
-            child: Container(
-              margin: Dimensions.isMobile() ? EdgeInsets.zero : EdgeInsets.symmetric(
-                vertical: Dimensions.size20,
-                horizontal: Dimensions.size10,
-              ),
-              child: SmoothClipRRect(
-                smoothness: 1,
-                borderRadius: Dimensions.isMobile() ? BorderRadius.zero : BorderRadius.circular(Dimensions.size20),
-                side: Dimensions.isMobile() ? BorderSide.none : BorderSide(color: AppColors.outline()),
-                child: SizedBox(
-                  height: double.infinity,
-                  width: Dimensions.isMobile() ? null : (width ?? Dimensions.size100 * 4),
-                  child: Scaffold(
-                    body: SafeArea(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(
-                              Dimensions.size10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.surface(),
-                              border: Border(
-                                bottom: BorderSide(
-                                  width: 0.2,
-                                  color: AppColors.outline(),
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    Navigators.pop();
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_back,
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: StringUtils.isNotNullOrEmpty(title),
-                                  child: Container(
-                                    margin: EdgeInsets.only(
-                                      left: Dimensions.size5,
-                                    ),
-                                    child: Text(
-                                      title ?? "",
-                                      style: TextStyle(
-                                        fontSize: Dimensions.text16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(child: body),
-                        ],
+          return SafeArea(
+            child: Align(
+              alignment: (rightSide ? Alignment.centerRight : Alignment.centerLeft),
+              child: Container(
+                margin: Dimensions.isMobile() ? EdgeInsets.zero : EdgeInsets.all(Dimensions.size15),
+                child: SmoothClipRRect(
+                  smoothness: 1,
+                  borderRadius: Dimensions.isMobile() ? BorderRadius.zero : BorderRadius.circular(Dimensions.size20),
+                  side: Dimensions.isMobile() ? BorderSide.none : BorderSide(color: AppColors.outline()),
+                  child: SizedBox(
+                    height: double.infinity,
+                    width: Dimensions.isMobile() ? null : (width ?? Dimensions.size100 * 4),
+                    child: SafeArea(
+                      child: Scaffold(
+                        body: Column(
+                          children: [
+                            BaseAppBar(title: title ?? ""),
+                            Expanded(child: body),
+                          ],
+                        ),
                       ),
                     ),
                   ),
