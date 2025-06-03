@@ -12,7 +12,12 @@ class BaseBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(Dimensions.size15),
+      padding: EdgeInsets.fromLTRB(
+          Dimensions.size15,
+          Dimensions.size15,
+          Dimensions.size15,
+          Dimensions.size15 + MediaQuery.of(context).padding.bottom,
+      ),
       decoration: BoxDecoration(
         color: AppColors.surfaceContainerLowest(),
         border: Border(
