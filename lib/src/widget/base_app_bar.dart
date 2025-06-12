@@ -11,6 +11,7 @@ class BaseAppBar extends AppBar {
   final String? description;
   final TextEditingController? tecSearch;
   final ValueChanged<String>? onChanged;
+  final List<Widget>? trailings;
 
   BaseAppBar({
     required this.context,
@@ -18,6 +19,9 @@ class BaseAppBar extends AppBar {
     this.description,
     this.tecSearch,
     this.onChanged,
+    this.trailings,
+    super.leading,
+    super.shape,
     super.key,
   });
 
@@ -34,12 +38,12 @@ class BaseAppBar extends AppBar {
       );
     }
 
-    return SizedBox(width: Dimensions.size15);
+    return super.leading ?? SizedBox(width: Dimensions.size15);
   }
 
   @override
   double? get leadingWidth {
-    if (context.canPop()) {
+    if (super.leading != null || context.canPop()) {
       return null;
     }
 
@@ -80,11 +84,14 @@ class BaseAppBar extends AppBar {
   }
 
   @override
+  bool? get centerTitle => false;
+
+  @override
   double? get titleSpacing => 0;
 
   @override
   ShapeBorder? get shape {
-    return Border(
+    return super.shape ?? Border(
       bottom: BorderSide(
         color: AppColors.outline(),
       ),
@@ -110,9 +117,9 @@ class BaseAppBar extends AppBar {
                 side: BorderSide(color: AppColors.outline()),
               ),
             ),
-            elevation: WidgetStatePropertyAll(0),
+            elevation: const WidgetStatePropertyAll(0),
             backgroundColor: WidgetStatePropertyAll(AppColors.surfaceContainerLow()),
-            leading: Icon(Icons.search),
+            leading: const Icon(Icons.search),
             padding: WidgetStatePropertyAll(
               EdgeInsets.symmetric(
                 vertical: 0,
@@ -140,4 +147,16 @@ class BaseAppBar extends AppBar {
 
   @override
   double? get scrolledUnderElevation => 0;
+
+  @override
+  List<Widget>? get actions {
+    if (trailings != null && trailings!.isNotEmpty) {
+      return [
+        ...trailings!,
+        SizedBox(width: Dimensions.size15),
+      ];
+    }
+
+    return null;
+  }
 }

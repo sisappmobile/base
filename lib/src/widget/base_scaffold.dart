@@ -9,16 +9,17 @@ enum BaseBodyStatus {
 }
 
 class BaseScaffold extends Scaffold {
+  final Widget Function() contentBuilder;
   final BaseBodyStatus Function()? statusBuilder;
   final RefreshCallback? onRefresh;
   final Color? bodyColor;
 
   const BaseScaffold({
+    required this.contentBuilder,
     this.statusBuilder,
     this.onRefresh,
     this.bodyColor,
     super.appBar,
-    super.body,
     super.bottomNavigationBar,
     super.floatingActionButton,
     super.floatingActionButtonLocation,
@@ -30,6 +31,14 @@ class BaseScaffold extends Scaffold {
 
   @override
   Widget? get body {
+    Widget containerWidget(Widget? widget) {
+      return Container(
+        height: double.infinity,
+        color: bodyColor ?? AppColors.surface(),
+        child: Material(child: widget),
+      );
+    }
+
     BaseBodyStatus status = BaseBodyStatus.loaded;
 
     if (statusBuilder != null) {
@@ -37,16 +46,13 @@ class BaseScaffold extends Scaffold {
     }
 
     if (status == BaseBodyStatus.loaded) {
-      return Container(
-        color: bodyColor ?? AppColors.surface(),
-        child: super.body,
-      );
+      return containerWidget(contentBuilder());
     } else if (status == BaseBodyStatus.fail) {
-      return BaseWidgets.loadingFail(onRefresh: onRefresh);
+      return containerWidget(BaseWidgets.loadingFail(onRefresh: onRefresh));
     } else if (status == BaseBodyStatus.empty) {
-      return BaseWidgets.noData(onRefresh: onRefresh);
+      return containerWidget(BaseWidgets.noData(onRefresh: onRefresh));
     }
 
-    return BaseWidgets.shimmer();
+    return containerWidget(BaseWidgets.shimmer());
   }
 }
