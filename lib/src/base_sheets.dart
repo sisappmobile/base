@@ -42,7 +42,7 @@ class BaseSheets {
     required List<CheckableItem> checkableItems,
   }) async {
     return await context.push(
-      BaseRoute.spinner.path,
+      BaseRoute.checkable.path,
       extra: {
         "title": title,
         "checkableItems": checkableItems,
