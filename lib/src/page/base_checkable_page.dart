@@ -79,6 +79,7 @@ class BaseCheckablePageState extends State<BaseCheckablePage> with WidgetsBindin
         ],
       ),
       contentBuilder: body,
+      bottomNavigationBar: bottomBar(),
     );
   }
 
