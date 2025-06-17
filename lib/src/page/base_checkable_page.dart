@@ -69,7 +69,7 @@ class BaseCheckablePageState extends State<BaseCheckablePage> with WidgetsBindin
             onChanged: (value) {
               selectedAll = !selectedAll;
 
-              for (CheckableItem checkableItem in filteredItems()) {
+              for (CheckableItem checkableItem in widget.checkableItems) {
                 checkableItem.selected = selectedAll;
               }
 
