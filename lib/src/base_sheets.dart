@@ -7,10 +7,10 @@ import "package:base/src/base_overlays.dart";
 import "package:base/src/base_preferences.dart";
 import "package:base/src/base_routes.dart";
 import "package:base/src/base_side_sheet.dart";
-import "package:base/src/base_widgets.dart";
 import "package:base/src/dimensions.dart";
 import "package:base/src/navigators.dart";
-import "package:basic_utils/basic_utils.dart";
+import "package:base/src/page/base_checkable_page.dart";
+import "package:base/src/page/base_spinner_page.dart";
 import "package:easy_localization/easy_localization.dart" as el;
 import "package:flutter/material.dart";
 import "package:get/get.dart";
@@ -36,223 +36,18 @@ class BaseSheets {
     );
   }
 
-  static Future<dynamic> checkable({
+  static Future<List<CheckableItem>?> checkable({
+    required BuildContext context,
     required String title,
-    required List<SpinnerItem> spinnerItems,
-    required void Function(List<SpinnerItem> selectedItems) onSelected,
-    BuildContext? context,
+    required List<CheckableItem> checkableItems,
   }) async {
-    TextEditingController textEditingController = TextEditingController();
-
-    List<SpinnerItem> filteredSpinnerItems = [];
-
-    filteredSpinnerItems.addAll(spinnerItems);
-
-    bool selectedAll = !spinnerItems.any((element) => !element.selected);
-
-    Widget body() {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Scaffold(
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(
-                      Dimensions.size15,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface(),
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 0.2,
-                          color: AppColors.outline(),
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigators.pop(context: context);
-                              },
-                              icon: const Icon(
-                                Icons.arrow_back,
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  left: Dimensions.size5,
-                                ),
-                                child: Text(
-                                  title,
-                                  style: TextStyle(
-                                    fontSize: Dimensions.text16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                left: Dimensions.size15,
-                              ),
-                              child: BaseWidgets.check(
-                                label: el.tr("select_all"),
-                                value: selectedAll,
-                                readonly: false,
-                                onChanged: (value) {
-                                  selectedAll = !selectedAll;
-
-                                  for (SpinnerItem spinnerItem in spinnerItems) {
-                                    spinnerItem.selected = selectedAll;
-                                  }
-
-                                  setState(() {});
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: Dimensions.size10),
-                        TextField(
-                          controller: textEditingController,
-                          textInputAction: TextInputAction.search,
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: el.tr("search"),
-                            hintStyle: TextStyle(
-                              color: AppColors.onSurface().withValues(alpha:0.5),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: AppColors.onSurface().withValues(alpha:0.5),
-                            ),
-                            filled: true,
-                            fillColor: AppColors.backgroundSurface(),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.outline().withValues(alpha:0.3),
-                              ),
-                              borderRadius: BorderRadius.circular(Dimensions.size10),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.outline().withValues(alpha:0.3),
-                              ),
-                              borderRadius: BorderRadius.circular(Dimensions.size10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.outline().withValues(alpha:0.3),
-                              ),
-                              borderRadius: BorderRadius.circular(Dimensions.size10),
-                            ),
-                          ),
-                          onChanged: (String value) {
-                            setState(() {
-                              filteredSpinnerItems.clear();
-
-                              if (StringUtils.isNotNullOrEmpty(textEditingController.text)) {
-                                for (SpinnerItem spinnerItem in spinnerItems) {
-                                  if (spinnerItem.description.toLowerCase().contains(textEditingController.text.toLowerCase(),)) {
-                                    filteredSpinnerItems.add(spinnerItem);
-                                  }
-                                }
-                              } else {
-                                filteredSpinnerItems.addAll(spinnerItems);
-                              }
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: filteredSpinnerItems.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        SpinnerItem spinnerItem = filteredSpinnerItems[index];
-
-                        return CheckboxListTile(
-                          value: spinnerItem.selected,
-                          onChanged: (value) {
-                            setState(() {
-                              spinnerItem.selected = value ?? false;
-                            });
-                          },
-                          title: Text(
-                            spinnerItem.description,
-                            style: TextStyle(
-                              color: spinnerItem.selected ? AppColors.primary() : AppColors.onSurface(),
-                              fontWeight: spinnerItem.selected ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const Divider(
-                          height: 0,
-                        );
-                      },
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: Dimensions.size20,
-                      vertical: Dimensions.size15,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(
-                          width: 0.2,
-                          color: AppColors.outline(),
-                        ),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        FilledButton.icon(
-                          onPressed: () async {
-                            onSelected(spinnerItems.where((element) => element.selected).toList());
-
-                            Navigators.pop();
-                          },
-                          label: Text(el.tr("save")),
-                          icon: const Icon(Icons.save),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
-
-    if (context != null) {
-      return Navigators.push(
-        body(),
-        context: context,
-      );
-    } else {
-      if (Navigators.sideSheetNavigatorState.currentContext != null) {
-        return Navigators.push(
-          body(),
-          context: context,
-        );
-      } else {
-        return await BaseSideSheet.rightFlow(
-          initialBody: body(),
-        );
-      }
-    }
+    return await context.push(
+      BaseRoute.spinner.path,
+      extra: {
+        "title": title,
+        "checkableItems": checkableItems,
+      },
+    );
   }
 
   static Future<dynamic> menu({
@@ -491,22 +286,6 @@ class BaseSheets {
       ),
     );
   }
-}
-
-class SpinnerItem {
-  final dynamic identity;
-  final String description;
-  final String? selectedDescription;
-  final dynamic tag;
-  bool selected;
-
-  SpinnerItem({
-    required this.identity,
-    required this.description,
-    this.selectedDescription,
-    this.tag,
-    this.selected = false,
-  });
 }
 
 class MenuItem {

@@ -1,4 +1,5 @@
 import 'package:base/base.dart';
+import 'package:base/src/page/base_spinner_page.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';

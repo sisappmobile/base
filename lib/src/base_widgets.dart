@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import "package:base/base.dart";
-import "package:base/src/base_date_field.dart";
+import "package:base/src/page/base_spinner_page.dart";
 import "package:basic_utils/basic_utils.dart";
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
