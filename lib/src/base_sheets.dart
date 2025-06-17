@@ -5,6 +5,7 @@ import "dart:io";
 import "package:base/src/app_colors.dart";
 import "package:base/src/base_overlays.dart";
 import "package:base/src/base_preferences.dart";
+import "package:base/src/base_routes.dart";
 import "package:base/src/base_side_sheet.dart";
 import "package:base/src/base_widgets.dart";
 import "package:base/src/dimensions.dart";
@@ -13,6 +14,7 @@ import "package:basic_utils/basic_utils.dart";
 import "package:easy_localization/easy_localization.dart" as el;
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:go_router/go_router.dart";
 import "package:jiffy/jiffy.dart";
 import "package:photo_view/photo_view.dart";
 import "package:smooth_corner/smooth_corner.dart";
@@ -20,173 +22,18 @@ import "package:syncfusion_flutter_datepicker/datepicker.dart";
 import "package:video_player/video_player.dart";
 
 class BaseSheets {
-  static Future<dynamic> spinner({
+  static Future<SpinnerItem?> spinner({
+    required BuildContext context,
     required String title,
     required List<SpinnerItem> spinnerItems,
-    required void Function(SpinnerItem selectedItem) onSelected,
-    BuildContext? context,
   }) async {
-    TextEditingController textEditingController = TextEditingController();
-
-    List<SpinnerItem> filteredSpinnerItems = [];
-
-    filteredSpinnerItems.addAll(spinnerItems);
-
-    Widget body() {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Scaffold(
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(
-                      Dimensions.size15,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface(),
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 0.2,
-                          color: AppColors.outline(),
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigators.pop(context: context);
-                              },
-                              icon: const Icon(
-                                Icons.arrow_back,
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  left: Dimensions.size5,
-                                ),
-                                child: Text(
-                                  title,
-                                  style: TextStyle(
-                                    fontSize: Dimensions.text16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: Dimensions.size10),
-                        TextField(
-                          controller: textEditingController,
-                          textInputAction: TextInputAction.search,
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: el.tr("search"),
-                            hintStyle: TextStyle(
-                              color: AppColors.onSurface().withValues(alpha:0.5),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: AppColors.onSurface().withValues(alpha:0.5),
-                            ),
-                            filled: true,
-                            fillColor: AppColors.backgroundSurface(),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.outline().withValues(alpha:0.3),
-                              ),
-                              borderRadius: BorderRadius.circular(Dimensions.size10),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.outline().withValues(alpha:0.3),
-                              ),
-                              borderRadius: BorderRadius.circular(Dimensions.size10),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.outline().withValues(alpha:0.3),
-                              ),
-                              borderRadius: BorderRadius.circular(Dimensions.size10),
-                            ),
-                          ),
-                          onChanged: (String value) {
-                            setState(() {
-                              filteredSpinnerItems.clear();
-
-                              if (StringUtils.isNotNullOrEmpty(textEditingController.text)) {
-                                for (SpinnerItem spinnerItem in spinnerItems) {
-                                  if (spinnerItem.description.toLowerCase().contains(textEditingController.text.toLowerCase(),)) {
-                                    filteredSpinnerItems.add(spinnerItem);
-                                  }
-                                }
-                              } else {
-                                filteredSpinnerItems.addAll(spinnerItems);
-                              }
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: filteredSpinnerItems.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        SpinnerItem spinnerItem = filteredSpinnerItems[index];
-
-                        return ListTile(
-                          onTap: () {
-                            Navigators.pop(context: context);
-
-                            onSelected(spinnerItem);
-                          },
-                          title: Text(
-                            spinnerItem.description,
-                            style: TextStyle(
-                              color: spinnerItem.selected ? AppColors.primary() : AppColors.onSurface(),
-                              fontWeight: spinnerItem.selected ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const Divider(
-                          height: 0,
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
-
-    if (context != null) {
-      return Navigators.push(
-        body(),
-        context: context,
-      );
-    } else {
-      if (Navigators.sideSheetNavigatorState.currentContext != null) {
-        return Navigators.push(
-          body(),
-          context: Navigators.sideSheetNavigatorState.currentContext,
-        );
-      } else {
-        return await BaseSideSheet.rightFlow(
-          initialBody: body(),
-        );
-      }
-    }
+    return await context.push(
+      BaseRoute.spinner.path,
+      extra: {
+        "title": title,
+        "spinnerItems": spinnerItems,
+      },
+    );
   }
 
   static Future<dynamic> checkable({

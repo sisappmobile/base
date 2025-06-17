@@ -56,15 +56,17 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                 onTap: !widget.readonly ? () async {
                   widget.spinnerItems.forEach((element) => element.selected = element.identity == widget.value);
 
-                  await BaseSheets.spinner(
+                  SpinnerItem? result = await BaseSheets.spinner(
+                    context: context,
                     title: widget.label ?? "",
                     spinnerItems: widget.spinnerItems,
-                    onSelected: (selectedItem) {
-                      widget.onSelected(selectedItem);
-
-                      setState(() {});
-                    },
                   );
+
+                  if (result != null) {
+                    widget.onSelected(result);
+
+                    setState(() {});
+                  }
                 } : null,
                 customBorder: SmoothRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -78,7 +80,7 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                       borderRadius: BorderRadius.circular(12),
                       smoothness: 1,
                       side: BorderSide(
-                          color: borderColor(field),
+                        color: borderColor(field),
                       ),
                     ),
                     color: AppColors.surfaceContainerLowest(),
@@ -90,16 +92,16 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                     children: [
                       Expanded(
                           child: Text(
-                              spinnerItem?.selectedDescription ?? spinnerItem?.description ?? widget.defaultDescription ?? "",
-                              style: TextStyle(
-                                fontSize: Dimensions.text16,
-                              ),
+                            spinnerItem?.selectedDescription ?? spinnerItem?.description ?? widget.defaultDescription ?? "",
+                            style: TextStyle(
+                              fontSize: Dimensions.text16,
+                            ),
                           )
                       ),
                       SizedBox(width: Dimensions.size10),
                       Icon(
-                          Icons.arrow_downward,
-                          size: Dimensions.size20,
+                        Icons.arrow_downward,
+                        size: Dimensions.size20,
                       )
                     ],
                   ),
