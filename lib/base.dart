@@ -32,3 +32,4 @@ export "src/locations.dart";
 export "src/navigators.dart";
 export "src/record_page.dart";
 export "src/record_preview_page.dart";
+export "src/base_routes.dart";
