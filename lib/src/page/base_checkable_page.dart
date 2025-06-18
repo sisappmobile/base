@@ -54,6 +54,7 @@ class BaseCheckablePageState extends State<BaseCheckablePage> with WidgetsBindin
     Theme.of(context);
 
     return BaseScaffold(
+      context: context,
       appBar: BaseAppBar(
         context: context,
         name: widget.title,

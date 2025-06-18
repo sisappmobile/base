@@ -1,5 +1,6 @@
 import "package:base/base.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 enum BaseBodyStatus {
   loading,
@@ -9,16 +10,22 @@ enum BaseBodyStatus {
 }
 
 class BaseScaffold extends Scaffold {
+  final BuildContext context;
   final Widget Function() contentBuilder;
   final BaseBodyStatus Function()? statusBuilder;
   final RefreshCallback? onRefresh;
   final Color? bodyColor;
+  final Brightness? statusBarIconBrightness;
+  final Brightness? systemNavigationBarIconBrightness;
 
   const BaseScaffold({
+    required this.context,
     required this.contentBuilder,
     this.statusBuilder,
     this.onRefresh,
     this.bodyColor,
+    this.statusBarIconBrightness,
+    this.systemNavigationBarIconBrightness,
     super.appBar,
     super.bottomNavigationBar,
     super.floatingActionButton,
@@ -32,10 +39,17 @@ class BaseScaffold extends Scaffold {
   @override
   Widget? get body {
     Widget containerWidget(Widget? widget) {
-      return Container(
-        height: double.infinity,
-        color: bodyColor ?? AppColors.surface(),
-        child: Material(child: widget),
+      return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+            statusBarIconBrightness: statusBarIconBrightness,
+            systemNavigationBarIconBrightness: systemNavigationBarIconBrightness,
+        ),
+        child: Container(
+          height: double.infinity,
+          color: bodyColor ?? AppColors.surface(),
+          padding: MediaQuery.of(context).viewPadding,
+          child: Material(child: widget),
+        ),
       );
     }
 

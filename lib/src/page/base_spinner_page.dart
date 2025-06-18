@@ -49,6 +49,7 @@ class BaseSpinnerPageState extends State<BaseSpinnerPage> with WidgetsBindingObs
     Theme.of(context);
 
     return BaseScaffold(
+      context: context,
       appBar: BaseAppBar(
         context: context,
         name: widget.title,
