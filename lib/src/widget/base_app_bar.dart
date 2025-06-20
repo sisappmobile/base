@@ -8,7 +8,7 @@ import "package:smooth_corner/smooth_corner.dart";
 class BaseAppBar extends AppBar {
   final BuildContext context;
   final String name;
-  final String? description;
+  final dynamic description;
   final TextEditingController? tecSearch;
   final ValueChanged<String>? onChanged;
   final List<Widget>? trailings;
@@ -22,6 +22,7 @@ class BaseAppBar extends AppBar {
     this.trailings,
     super.leading,
     super.shape,
+    super.bottom,
     super.key,
   });
 
@@ -64,23 +65,33 @@ class BaseAppBar extends AppBar {
       );
     }
 
-    if (StringUtils.isNotNullOrEmpty(description)) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          titleWidget(),
-          Text(
-            description!,
-            style: TextStyle(
-              fontSize: Dimensions.text12,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      );
+    Widget descriptionWidget() {
+      if (description != null) {
+        if (description is String) {
+          if (StringUtils.isNotNullOrEmpty(description)) {
+            return Text(
+              description!,
+              style: TextStyle(
+                fontSize: Dimensions.text12,
+                fontWeight: FontWeight.w500,
+              ),
+            );
+          }
+        } else if (description is Widget) {
+          return description;
+        }
+      }
+
+      return const SizedBox.shrink();
     }
 
-    return titleWidget();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        titleWidget(),
+        descriptionWidget(),
+      ],
+    );
   }
 
   @override
@@ -103,34 +114,38 @@ class BaseAppBar extends AppBar {
 
   @override
   PreferredSizeWidget? get bottom {
-    if (tecSearch != null && onChanged != null) {
-      return PreferredSize(
-        preferredSize: Size.fromHeight(Dimensions.size70),
-        child: Container(
-          margin: EdgeInsets.fromLTRB(Dimensions.size15, 0, Dimensions.size15, Dimensions.size15),
-          child: SearchBar(
-            controller: tecSearch,
-            shape: WidgetStatePropertyAll(
-              SmoothRectangleBorder(
-                smoothness: 1,
-                borderRadius: BorderRadius.circular(Dimensions.size15),
-                side: BorderSide(color: AppColors.outline()),
+    if (super.bottom != null) {
+      return super.bottom;
+    } else {
+      if (tecSearch != null && onChanged != null) {
+        return PreferredSize(
+          preferredSize: Size.fromHeight(Dimensions.size70),
+          child: Container(
+            margin: EdgeInsets.fromLTRB(Dimensions.size15, 0, Dimensions.size15, Dimensions.size15),
+            child: SearchBar(
+              controller: tecSearch,
+              shape: WidgetStatePropertyAll(
+                SmoothRectangleBorder(
+                  smoothness: 1,
+                  borderRadius: BorderRadius.circular(Dimensions.size15),
+                  side: BorderSide(color: AppColors.outline()),
+                ),
               ),
-            ),
-            elevation: const WidgetStatePropertyAll(0),
-            backgroundColor: WidgetStatePropertyAll(AppColors.surfaceContainerLow()),
-            leading: const Icon(Icons.search),
-            padding: WidgetStatePropertyAll(
-              EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: Dimensions.size15,
+              elevation: const WidgetStatePropertyAll(0),
+              backgroundColor: WidgetStatePropertyAll(AppColors.surfaceContainerLow()),
+              leading: const Icon(Icons.search),
+              padding: WidgetStatePropertyAll(
+                EdgeInsets.symmetric(
+                  vertical: 0,
+                  horizontal: Dimensions.size15,
+                ),
               ),
+              hintText: "${"search".tr()}...",
+              onChanged: onChanged,
             ),
-            hintText: "${"search".tr()}...",
-            onChanged: onChanged,
           ),
-        ),
-      );
+        );
+      }
     }
 
     return null;

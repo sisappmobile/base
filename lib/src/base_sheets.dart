@@ -26,12 +26,18 @@ class BaseSheets {
     required BuildContext context,
     required String title,
     required List<SpinnerItem> spinnerItems,
+    Widget Function(SpinnerItem spinnerItem)? customItemWidget,
+    Widget? separatorWidget,
+    EdgeInsets? padding,
   }) async {
     return await context.push(
       BaseRoute.spinner.path,
       extra: {
         "title": title,
         "spinnerItems": spinnerItems,
+        "customItemWidget": customItemWidget,
+        "separatorWidget": separatorWidget,
+        "padding": padding,
       },
     );
   }

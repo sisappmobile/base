@@ -9,23 +9,31 @@ enum BaseBodyStatus {
   fail,
 }
 
+class BaseInset {
+  final Brightness brightness;
+  final Color color;
+
+  BaseInset({
+    required this.brightness,
+    required this.color,
+  });
+}
+
 class BaseScaffold extends Scaffold {
   final BuildContext context;
   final Widget Function() contentBuilder;
   final BaseBodyStatus Function()? statusBuilder;
   final RefreshCallback? onRefresh;
-  final Color? bodyColor;
-  final Brightness? statusBarIconBrightness;
-  final Brightness? systemNavigationBarIconBrightness;
+  final BaseInset? top;
+  final BaseInset? bottom;
 
   const BaseScaffold({
     required this.context,
     required this.contentBuilder,
     this.statusBuilder,
     this.onRefresh,
-    this.bodyColor,
-    this.statusBarIconBrightness,
-    this.systemNavigationBarIconBrightness,
+    this.top,
+    this.bottom,
     super.appBar,
     super.bottomNavigationBar,
     super.floatingActionButton,
@@ -39,16 +47,39 @@ class BaseScaffold extends Scaffold {
   @override
   Widget? get body {
     Widget containerWidget(Widget? widget) {
+      Widget topWidget() {
+        if (top != null) {
+          return Container(
+            height: MediaQuery.of(context).padding.top,
+            color: top!.color,
+          );
+        }
+
+        return const SizedBox.shrink();
+      }
+
+      Widget bottomWidget() {
+        if (bottom != null) {
+          return Container(
+            height: MediaQuery.of(context).padding.bottom,
+            color: bottom!.color,
+          );
+        }
+
+        return const SizedBox.shrink();
+      }
+
       return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
-            statusBarIconBrightness: statusBarIconBrightness,
-            systemNavigationBarIconBrightness: systemNavigationBarIconBrightness,
+          statusBarIconBrightness: top?.brightness,
+          systemNavigationBarIconBrightness: bottom?.brightness,
         ),
-        child: Container(
-          height: double.infinity,
-          color: bodyColor ?? AppColors.surface(),
-          padding: MediaQuery.of(context).viewPadding,
-          child: Material(child: widget),
+        child: Column(
+          children: [
+            topWidget(),
+            Expanded(child: Material(child: widget)),
+            bottomWidget(),
+          ],
         ),
       );
     }

@@ -20,6 +20,9 @@ final List<GoRoute> baseRoutes = [
       return BaseSpinnerPage(
         title: extra["title"],
         spinnerItems: extra["spinnerItems"],
+        customItemWidget: extra["customItemWidget"],
+        separatorWidget: extra["separatorWidget"],
+        padding: extra["padding"],
       );
     },
   ),

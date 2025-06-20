@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import "package:base/base.dart";
+import "package:base/src/base_month_field.dart";
 import "package:base/src/page/base_spinner_page.dart";
 import "package:basic_utils/basic_utils.dart";
 import "package:easy_localization/easy_localization.dart";
@@ -88,10 +89,8 @@ class BaseWidgets {
     required String label,
     required bool mandatory,
     required bool readonly,
-    required TextEditingController controller,
     Jiffy? jiffy,
     void Function(Jiffy newValue)? onSelected,
-    bool? isDense = false,
   }) {
     return BaseDateField(
       mandatory: mandatory,
@@ -106,79 +105,15 @@ class BaseWidgets {
     required String label,
     required bool mandatory,
     required bool readonly,
-    required TextEditingController controller,
     required Jiffy? jiffy,
     required void Function(Jiffy newValue) onSelected,
-    bool? isDense = false,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: Dimensions.text12,
-            fontWeight: FontWeight.w700,
-            color: AppColors.onSurface().withValues(alpha: 80),
-          ),
-        ),
-        SizedBox(height: Dimensions.size5),
-        TextFormField(
-          controller: controller,
-          readOnly: true,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.outline().withValues(alpha:0.3),
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.outline().withValues(alpha:0.3),
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.primary(),
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.error(),
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(Dimensions.size10),
-            ),
-            suffixIcon: const Icon(
-              Icons.event,
-            ),
-            isDense: isDense,
-          ),
-          validator: (String? value) {
-            if (mandatory) {
-              if (jiffy == null) {
-                return "this_field_is_required".tr();
-              }
-            }
-
-            return null;
-          },
-          onTap: !readonly ? () async {
-            await BaseDialogs.month(
-              jiffy: jiffy,
-              onSelected: (newValue) {
-                controller.text = newValue.format(pattern: "MMMM yyyy");
-
-                onSelected(newValue);
-              },
-            );
-          } : null,
-        ),
-      ],
+    return BaseMonthField(
+      mandatory: mandatory,
+      readonly: readonly,
+      value: jiffy,
+      onSelected: onSelected,
+      label: label,
     );
   }
 
@@ -190,6 +125,9 @@ class BaseWidgets {
     required void Function(SpinnerItem selectedItem) onSelected,
     String? label,
     String? defaultDescription,
+    Widget Function(SpinnerItem spinnerItem)? customItemWidget,
+    Widget? separatorWidget,
+    EdgeInsets? padding,
   }) {
     return BaseSpinnerField(
       mandatory: mandatory,
@@ -199,6 +137,9 @@ class BaseWidgets {
       onSelected: onSelected,
       label: label,
       defaultDescription: defaultDescription,
+      customItemWidget: customItemWidget,
+      separatorWidget: separatorWidget,
+      padding: padding,
     );
   }
 

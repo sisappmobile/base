@@ -23,10 +23,16 @@ class SpinnerItem {
 class BaseSpinnerPage extends StatefulWidget {
   final String title;
   final List<SpinnerItem> spinnerItems;
+  final Widget Function(SpinnerItem spinnerItem)? customItemWidget;
+  final Widget? separatorWidget;
+  final EdgeInsets? padding;
 
   const BaseSpinnerPage({
     required this.title,
     required this.spinnerItems,
+    this.customItemWidget,
+    this.separatorWidget,
+    this.padding,
     super.key,
   });
 
@@ -84,27 +90,30 @@ class BaseSpinnerPageState extends State<BaseSpinnerPage> with WidgetsBindingObs
     Iterable<SpinnerItem> spinnerItems = filteredItems();
 
     return ListView.separated(
+      padding: widget.padding,
       itemCount: spinnerItems.length,
       itemBuilder: (BuildContext context, int index) {
         SpinnerItem spinnerItem = spinnerItems.elementAt(index);
 
-        return ListTile(
-          onTap: () {
-            context.pop(spinnerItem);
-          },
-          title: Text(
-            spinnerItem.description,
-            style: TextStyle(
-              color: spinnerItem.selected ? AppColors.primary() : AppColors.onSurface(),
-              fontWeight: spinnerItem.selected ? FontWeight.bold : FontWeight.normal,
+        if (widget.customItemWidget != null) {
+          return widget.customItemWidget!(spinnerItem);
+        } else {
+          return ListTile(
+            onTap: () {
+              context.pop(spinnerItem);
+            },
+            title: Text(
+              spinnerItem.description,
+              style: TextStyle(
+                color: spinnerItem.selected ? AppColors.primary() : AppColors.onSurface(),
+                fontWeight: spinnerItem.selected ? FontWeight.bold : FontWeight.normal,
+              ),
             ),
-          ),
-        );
+          );
+        }
       },
       separatorBuilder: (BuildContext context, int index) {
-        return const Divider(
-          height: 0,
-        );
+        return widget.separatorWidget ?? const Divider(height: 0);
       },
     );
   }

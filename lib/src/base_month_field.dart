@@ -1,51 +1,39 @@
 import 'package:base/base.dart';
 import 'package:basic_utils/basic_utils.dart';
-import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
-class BaseSpinnerField extends StatefulWidget {
+class BaseMonthField extends StatefulWidget {
   final bool mandatory;
   final bool readonly;
-  final List<SpinnerItem> spinnerItems;
-  final dynamic value;
-  final void Function(SpinnerItem selectedItem) onSelected;
+  final Jiffy? value;
+  final void Function(Jiffy newValue)? onSelected;
   final String? label;
-  final String? defaultDescription;
-  final Widget Function(SpinnerItem spinnerItem)? customItemWidget;
-  final Widget? separatorWidget;
-  final EdgeInsets? padding;
 
-  const BaseSpinnerField({
+  const BaseMonthField({
     super.key,
     required this.mandatory,
     required this.readonly,
-    required this.spinnerItems,
     required this.value,
-    required this.onSelected,
+    this.onSelected,
     this.label,
-    this.defaultDescription,
-    this.customItemWidget,
-    this.separatorWidget,
-    this.padding,
   });
 
   @override
-  State<BaseSpinnerField> createState() => BaseSpinnerFieldState();
+  State<BaseMonthField> createState() => BaseMonthFieldState();
 }
 
-class BaseSpinnerFieldState extends State<BaseSpinnerField> {
+class BaseMonthFieldState extends State<BaseMonthField> {
   @override
   Widget build(BuildContext context) {
-    SpinnerItem? spinnerItem = widget.spinnerItems.firstWhereOrNull((element) => element.identity == widget.value);
-
-    return FormField<SpinnerItem>(
-      initialValue: spinnerItem,
+    return FormField<Jiffy>(
+      initialValue: widget.value,
       enabled: !widget.readonly,
       validator: (value) {
         if (widget.mandatory) {
-          if (spinnerItem == null) {
+          if (widget.value == null) {
             return "this_field_is_required".tr();
           }
         }
@@ -60,22 +48,16 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
             Material(
               child: InkWell(
                 onTap: !widget.readonly ? () async {
-                  widget.spinnerItems.forEach((element) => element.selected = element.identity == widget.value);
+                  await BaseDialogs.month(
+                    jiffy: widget.value,
+                    onSelected: (newValue) {
+                      if (widget.onSelected != null) {
+                        widget.onSelected!(newValue);
 
-                  SpinnerItem? result = await BaseSheets.spinner(
-                    context: context,
-                    title: widget.label ?? "",
-                    spinnerItems: widget.spinnerItems,
-                    customItemWidget: widget.customItemWidget,
-                    separatorWidget: widget.separatorWidget,
-                    padding: widget.padding,
+                        setState(() {});
+                      }
+                    },
                   );
-
-                  if (result != null) {
-                    widget.onSelected(result);
-
-                    setState(() {});
-                  }
                 } : null,
                 customBorder: SmoothRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -100,16 +82,16 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
                   child: Row(
                     children: [
                       Expanded(
-                          child: Text(
-                            spinnerItem?.selectedDescription ?? spinnerItem?.description ?? widget.defaultDescription ?? "",
-                            style: TextStyle(
-                              fontSize: Dimensions.text16,
-                            ),
-                          )
+                        child: Text(
+                          widget.value?.format(pattern: "MMMM yyyy") ?? "",
+                          style: TextStyle(
+                            fontSize: Dimensions.text16,
+                          ),
+                        ),
                       ),
                       SizedBox(width: Dimensions.size10),
                       Icon(
-                        Icons.arrow_downward,
+                        Icons.event,
                         size: Dimensions.size20,
                       )
                     ],
