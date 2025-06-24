@@ -1,6 +1,7 @@
 // ignore_for_file: always_specify_types, use_build_context_synchronously
 
 import "package:base/base.dart";
+import "package:base/src/base_settings.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
@@ -100,7 +101,11 @@ class BaseSpinnerPageState extends State<BaseSpinnerPage> with WidgetsBindingObs
         } else {
           return ListTile(
             onTap: () {
-              context.pop(spinnerItem);
+              if (BaseSettings.navigatorType == BaseNavigatorType.legacy) {
+                Navigators.pop(result: spinnerItem);
+              } else {
+                context.pop(spinnerItem);
+              }
             },
             title: Text(
               spinnerItem.description,

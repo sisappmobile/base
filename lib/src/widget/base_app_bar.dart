@@ -1,4 +1,5 @@
 import "package:base/base.dart";
+import "package:base/src/base_settings.dart";
 import "package:basic_utils/basic_utils.dart";
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
@@ -28,10 +29,22 @@ class BaseAppBar extends AppBar {
 
   @override
   Widget? get leading {
-    if (context.canPop()) {
+    bool canPop = false;
+
+    if (BaseSettings.navigatorType == BaseNavigatorType.legacy) {
+      canPop = Navigators.canPop();
+    } else {
+      canPop = context.canPop();
+    }
+
+    if (canPop) {
       return IconButton(
         onPressed: () {
-          context.pop();
+          if (BaseSettings.navigatorType == BaseNavigatorType.legacy) {
+            Navigators.pop();
+          } else {
+            context.pop();
+          }
         },
         icon: const Icon(
           Icons.turn_left,

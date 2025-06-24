@@ -1,6 +1,7 @@
 // ignore_for_file: always_specify_types, use_build_context_synchronously
 
 import "package:base/base.dart";
+import "package:base/src/base_settings.dart";
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
@@ -139,7 +140,11 @@ class BaseCheckablePageState extends State<BaseCheckablePage> with WidgetsBindin
       children: [
         FilledButton(
           onPressed: () async {
-            context.pop(widget.checkableItems.where((element) => element.selected).toList());
+            if (BaseSettings.navigatorType == BaseNavigatorType.legacy) {
+              Navigators.pop(result: widget.checkableItems.where((element) => element.selected).toList());
+            } else {
+              context.pop(widget.checkableItems.where((element) => element.selected).toList());
+            }
           },
           child: Text("apply".tr()),
         ),

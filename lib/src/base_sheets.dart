@@ -21,6 +21,8 @@ import "package:smooth_corner/smooth_corner.dart";
 import "package:syncfusion_flutter_datepicker/datepicker.dart";
 import "package:video_player/video_player.dart";
 
+import "base_settings.dart";
+
 class BaseSheets {
   static Future<SpinnerItem?> spinner({
     required BuildContext context,
@@ -30,16 +32,28 @@ class BaseSheets {
     Widget? separatorWidget,
     EdgeInsets? padding,
   }) async {
-    return await context.push(
-      BaseRoute.spinner.path,
-      extra: {
-        "title": title,
-        "spinnerItems": spinnerItems,
-        "customItemWidget": customItemWidget,
-        "separatorWidget": separatorWidget,
-        "padding": padding,
-      },
-    );
+    if (BaseSettings.navigatorType == BaseNavigatorType.legacy) {
+      return await Navigators.push(
+        BaseSpinnerPage(
+          title: title,
+          spinnerItems: spinnerItems,
+          customItemWidget: customItemWidget,
+          separatorWidget: separatorWidget,
+          padding: padding,
+        ),
+      );
+    } else {
+      return await context.push(
+        BaseRoute.spinner.path,
+        extra: {
+          "title": title,
+          "spinnerItems": spinnerItems,
+          "customItemWidget": customItemWidget,
+          "separatorWidget": separatorWidget,
+          "padding": padding,
+        },
+      );
+    }
   }
 
   static Future<List<CheckableItem>?> checkable({
@@ -47,13 +61,22 @@ class BaseSheets {
     required String title,
     required List<CheckableItem> checkableItems,
   }) async {
-    return await context.push(
-      BaseRoute.checkable.path,
-      extra: {
-        "title": title,
-        "checkableItems": checkableItems,
-      },
-    );
+    if (BaseSettings.navigatorType == BaseNavigatorType.legacy) {
+      return await Navigators.push(
+        BaseCheckablePage(
+          title: title,
+          checkableItems: checkableItems,
+        ),
+      );
+    } else {
+      return await context.push(
+        BaseRoute.checkable.path,
+        extra: {
+          "title": title,
+          "checkableItems": checkableItems,
+        },
+      );
+    }
   }
 
   static Future<dynamic> menu({
