@@ -2,7 +2,6 @@
 
 import "package:base/base.dart";
 import "package:base/src/base_month_field.dart";
-import "package:base/src/page/base_spinner_page.dart";
 import "package:basic_utils/basic_utils.dart";
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
@@ -433,100 +432,117 @@ class BaseWidgets {
     );
   }
 
-  static Widget shimmer() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: Dimensions.size20,
+  static Widget shimmer({bool unbounded = false}) {
+    Widget content({BoxConstraints? constraints}) {
+      return Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: Dimensions.size20,
+        ),
+        constraints: BoxConstraints(
+          minHeight: constraints?.maxHeight ?? Dimensions.screenHeight - Dimensions.size100,
+        ),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset(
+              "assets/lottie/loading.json",
+              frameRate: const FrameRate(60),
+              height: Dimensions.size100,
+              width: Dimensions.size100,
+              repeat: true,
             ),
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
+            Text(
+              "${"loading".tr()}...",
+              style: TextStyle(
+                fontSize: Dimensions.text20,
+                color: AppColors.onSurface(),
+              ),
+              textAlign: TextAlign.center,
             ),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Lottie.asset(
-                  "assets/lottie/loading.json",
-                  frameRate: const FrameRate(60),
-                  height: Dimensions.size100,
-                  width: Dimensions.size100,
-                  repeat: true,
-                ),
-                Text(
-                  "${"loading".tr()}...",
-                  style: TextStyle(
-                    fontSize: Dimensions.text20,
-                    color: AppColors.onSurface(),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+          ],
+        ),
+      );
+    }
 
-  static Widget loadingFail({
-    RefreshCallback? onRefresh,
-  }) {
-    Widget body() {
+    if (unbounded) {
+      return content();
+    } else {
       return LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: Dimensions.size20,
-              ),
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-              ),
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Lottie.asset(
-                    "assets/lottie/loading_fail.json",
-                    frameRate: const FrameRate(60),
-                    width: Dimensions.size100 * 2,
-                    repeat: false,
-                  ),
-                  Text(
-                    "failed_to_load_data".tr(),
-                    style: TextStyle(
-                      fontSize: Dimensions.text20,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.onSurface(),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: Dimensions.size10,
-                  ),
-                  Text(
-                    "failed_to_load_data_hint".tr(),
-                    style: TextStyle(
-                      fontSize: Dimensions.text14,
-                      fontWeight: FontWeight.w300,
-                      color: AppColors.onSurface(),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
+            child: content(constraints: constraints),
           );
         },
       );
     }
+  }
 
-    if (onRefresh != null) {
+  static Widget loadingFail({
+    RefreshCallback? onRefresh,
+    bool unbounded = false,
+  }) {
+    Widget body() {
+      Widget content({BoxConstraints? constraints}) {
+        return Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: Dimensions.size20,
+          ),
+          constraints: BoxConstraints(
+            minHeight: constraints?.maxHeight ?? Dimensions.screenHeight - Dimensions.size100,
+          ),
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset(
+                "assets/lottie/loading_fail.json",
+                frameRate: const FrameRate(60),
+                width: Dimensions.size100 * 2,
+                repeat: false,
+              ),
+              Text(
+                "failed_to_load_data".tr(),
+                style: TextStyle(
+                  fontSize: Dimensions.text20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.onSurface(),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: Dimensions.size10,
+              ),
+              Text(
+                "failed_to_load_data_hint".tr(),
+                style: TextStyle(
+                  fontSize: Dimensions.text14,
+                  fontWeight: FontWeight.w300,
+                  color: AppColors.onSurface(),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        );
+      }
+
+      if (unbounded) {
+        return content();
+      } else {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: content(constraints: constraints),
+            );
+          },
+        );
+      }
+    }
+
+    if (onRefresh != null && !unbounded) {
       return RefreshIndicator(
         onRefresh: onRefresh,
         child: body(),
@@ -538,59 +554,68 @@ class BaseWidgets {
 
   static Widget noData({
     RefreshCallback? onRefresh,
+    bool unbounded = false,
   }) {
     Widget body() {
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
+      Widget content({BoxConstraints? constraints}) {
+        return Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: Dimensions.size20,
+          ),
+          constraints: BoxConstraints(
+            minHeight: constraints?.maxHeight ?? Dimensions.screenHeight - Dimensions.size100,
+          ),
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset(
+                "assets/lottie/no_data.json",
+                frameRate: const FrameRate(60),
+                width: Dimensions.size100 * 2,
+                repeat: false,
+              ),
+              Text(
+                "no_data".tr(),
+                style: TextStyle(
+                  fontSize: Dimensions.text20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.onSurface(),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: Dimensions.size10,
+              ),
+              Text(
+                "no_data_hint".tr(),
+                style: TextStyle(
+                  fontSize: Dimensions.text14,
+                  fontWeight: FontWeight.w300,
+                  color: AppColors.onSurface(),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        );
+      }
+
+      if (unbounded) {
+        return content();
+      } else {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: Dimensions.size20,
-                ),
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Lottie.asset(
-                      "assets/lottie/no_data.json",
-                      frameRate: const FrameRate(60),
-                      width: Dimensions.size100 * 2,
-                      repeat: false,
-                    ),
-                    Text(
-                      "no_data".tr(),
-                      style: TextStyle(
-                        fontSize: Dimensions.text20,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.onSurface(),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: Dimensions.size10,
-                    ),
-                    Text(
-                      "no_data_hint".tr(),
-                      style: TextStyle(
-                        fontSize: Dimensions.text14,
-                        fontWeight: FontWeight.w300,
-                        color: AppColors.onSurface(),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              )
-          );
-        },
-      );
+              child: content(constraints: constraints),
+            );
+          },
+        );
+      }
     }
 
-    if (onRefresh != null) {
+    if (onRefresh != null && !unbounded) {
       return RefreshIndicator(
         onRefresh: onRefresh,
         child: body(),
