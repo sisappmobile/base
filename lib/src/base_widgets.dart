@@ -439,7 +439,7 @@ class BaseWidgets {
           horizontal: Dimensions.size20,
         ),
         constraints: BoxConstraints(
-          minHeight: constraints?.maxHeight ?? Dimensions.screenHeight - Dimensions.size100,
+          minHeight: constraints?.maxHeight ?? Dimensions.size100 * 5,
         ),
         alignment: Alignment.center,
         child: Column(
@@ -490,7 +490,7 @@ class BaseWidgets {
             horizontal: Dimensions.size20,
           ),
           constraints: BoxConstraints(
-            minHeight: constraints?.maxHeight ?? Dimensions.screenHeight - Dimensions.size100,
+            minHeight: constraints?.maxHeight ?? Dimensions.size100 * 5,
           ),
           alignment: Alignment.center,
           child: Column(
@@ -563,7 +563,7 @@ class BaseWidgets {
             horizontal: Dimensions.size20,
           ),
           constraints: BoxConstraints(
-            minHeight: constraints?.maxHeight ?? Dimensions.screenHeight - Dimensions.size100,
+            minHeight: constraints?.maxHeight ?? Dimensions.size100 * 5,
           ),
           alignment: Alignment.center,
           child: Column(
