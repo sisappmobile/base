@@ -5,7 +5,6 @@ export "src/widget/base_bottom_bar.dart";
 export "src/widget/base_scaffold.dart";
 
 export "src/app_colors.dart";
-export "src/attachments.dart";
 export "src/base_date_field.dart";
 export "src/base_dialogs.dart";
 export "src/base_encoding_interceptor.dart";
@@ -27,7 +26,6 @@ export "src/camera_preview_page.dart";
 export "src/custom_shimmer.dart";
 export "src/dimensions.dart";
 export "src/extensions.dart";
-export "src/general_attachments.dart";
 export "src/locations.dart";
 export "src/navigators.dart";
 export "src/record_page.dart";
