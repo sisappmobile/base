@@ -57,7 +57,15 @@ class BaseAppBar extends AppBar {
 
   @override
   double? get leadingWidth {
-    if (super.leading != null || context.canPop()) {
+    bool canPop = false;
+
+    if (BaseSettings.navigatorType == BaseNavigatorType.legacy) {
+      canPop = Navigators.canPop();
+    } else {
+      canPop = context.canPop();
+    }
+
+    if (super.leading != null || canPop) {
       return null;
     }
 
