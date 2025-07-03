@@ -91,7 +91,7 @@ class BaseTextFieldState extends State<BaseTextField> {
             labelWidget(),
             Container(
               width: double.infinity,
-              height: Dimensions.size55,
+              height: Dimensions.size55 + (((widget.maxLines ?? 1) - 1) * 25),
               decoration: ShapeDecoration(
                 shape: SmoothRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
