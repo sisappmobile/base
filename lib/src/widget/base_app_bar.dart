@@ -1,29 +1,41 @@
 import "package:base/base.dart";
-import "package:base/src/base_settings.dart";
 import "package:basic_utils/basic_utils.dart";
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:smooth_corner/smooth_corner.dart";
 
+class SearchOption {
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  SearchOption({
+    required this.controller,
+    required this.onChanged,
+  });
+}
+
 class BaseAppBar extends AppBar {
   final BuildContext context;
   final String name;
   final dynamic description;
-  final TextEditingController? tecSearch;
-  final ValueChanged<String>? onChanged;
+  final SearchOption? searchOption;
   final List<Widget>? trailings;
+  final Color? borderColor;
 
   BaseAppBar({
     required this.context,
     required this.name,
     this.description,
-    this.tecSearch,
-    this.onChanged,
+    this.searchOption,
     this.trailings,
+    this.borderColor,
     super.leading,
     super.shape,
     super.bottom,
+    super.primary,
+    super.backgroundColor,
+    super.foregroundColor,
     super.key,
   });
 
@@ -78,7 +90,7 @@ class BaseAppBar extends AppBar {
       return Text(
         name,
         style: TextStyle(
-          color: AppColors.onSurface(),
+          color: foregroundColor,
           fontSize: Dimensions.text16,
           fontWeight: FontWeight.bold,
           fontFamily: "Manrope",
@@ -125,35 +137,36 @@ class BaseAppBar extends AppBar {
   ShapeBorder? get shape {
     return super.shape ?? Border(
       bottom: BorderSide(
-        color: AppColors.outline(),
+        color: borderColor ?? AppColors.outline(),
       ),
     );
   }
 
   @override
-  Color? get backgroundColor => AppColors.surfaceContainerLowest();
+  Color? get backgroundColor => super.backgroundColor ?? AppColors.surfaceContainerLowest();
 
   @override
   PreferredSizeWidget? get bottom {
     if (super.bottom != null) {
       return super.bottom;
     } else {
-      if (tecSearch != null && onChanged != null) {
+      if (searchOption != null) {
         return PreferredSize(
-          preferredSize: Size.fromHeight(Dimensions.size70),
+          preferredSize: Size.fromHeight(Dimensions.size50),
           child: Container(
+            height: Dimensions.size50,
             margin: EdgeInsets.fromLTRB(Dimensions.size15, 0, Dimensions.size15, Dimensions.size15),
             child: SearchBar(
-              controller: tecSearch,
+              controller: searchOption!.controller,
               shape: WidgetStatePropertyAll(
                 SmoothRectangleBorder(
                   smoothness: 1,
                   borderRadius: BorderRadius.circular(Dimensions.size15),
-                  side: BorderSide(color: AppColors.outline()),
+                  side: BorderSide(color: borderColor ?? AppColors.outline()),
                 ),
               ),
               elevation: const WidgetStatePropertyAll(0),
-              backgroundColor: WidgetStatePropertyAll(AppColors.surfaceContainerLow()),
+              backgroundColor: WidgetStatePropertyAll(backgroundColor),
               leading: const Icon(Icons.search),
               padding: WidgetStatePropertyAll(
                 EdgeInsets.symmetric(
@@ -162,7 +175,7 @@ class BaseAppBar extends AppBar {
                 ),
               ),
               hintText: "${"search".tr()}...",
-              onChanged: onChanged,
+              onChanged: searchOption!.onChanged,
             ),
           ),
         );
@@ -174,11 +187,17 @@ class BaseAppBar extends AppBar {
 
   @override
   Size get preferredSize {
-    if (tecSearch != null && onChanged != null) {
-      return Size(super.preferredSize.width, super.preferredSize.height + Dimensions.size70);
+    Size size = super.preferredSize;
+
+    if (super.bottom == null && bottom != null) {
+      size = Size(size.width, size.height + (bottom!.preferredSize.height + Dimensions.size10));
     }
 
-    return super.preferredSize;
+    if (!primary) {
+      size = Size(size.width, size.height - Dimensions.size25);
+    }
+
+    return size;
   }
 
   @override
@@ -186,11 +205,14 @@ class BaseAppBar extends AppBar {
 
   @override
   List<Widget>? get actions {
+    List<Widget> actions = [];
+
     if (trailings != null && trailings!.isNotEmpty) {
-      return [
-        ...trailings!,
-        SizedBox(width: Dimensions.size15),
-      ];
+      actions.addAll(trailings!);
+    }
+
+    if (actions.isNotEmpty) {
+      actions.add(SizedBox(width: Dimensions.size15));
     }
 
     return null;

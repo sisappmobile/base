@@ -3,9 +3,15 @@ import "package:flutter/material.dart";
 
 class BaseBottomBar extends StatelessWidget {
   final List<Widget> children;
+  final bool removeBottomInset;
+  final Color? backgroundColor;
+  final Color? borderColor;
 
   const BaseBottomBar({
     required this.children,
+    this.removeBottomInset = false,
+    this.backgroundColor,
+    this.borderColor,
     super.key,
   });
 
@@ -16,13 +22,13 @@ class BaseBottomBar extends StatelessWidget {
           Dimensions.size15,
           Dimensions.size15,
           Dimensions.size15,
-          Dimensions.size15 + MediaQuery.of(context).padding.bottom,
+          Dimensions.size15 + (removeBottomInset ? 0 : MediaQuery.of(context).padding.bottom),
       ),
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLowest(),
+        color: backgroundColor ?? AppColors.surfaceContainerLowest(),
         border: Border(
           top: BorderSide(
-            color: AppColors.outline(),
+            color: borderColor ?? AppColors.outline(),
           ),
         ),
       ),

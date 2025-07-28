@@ -38,11 +38,12 @@ class BaseScaffold extends Scaffold {
     super.bottomNavigationBar,
     super.floatingActionButton,
     super.floatingActionButtonLocation,
+    super.backgroundColor,
     super.key,
   });
 
   @override
-  Color? get backgroundColor => AppColors.surfaceContainerLowest();
+  Color? get backgroundColor => super.backgroundColor ?? AppColors.surface();
 
   @override
   Widget? get body {
@@ -77,7 +78,12 @@ class BaseScaffold extends Scaffold {
         child: Column(
           children: [
             topWidget(),
-            Expanded(child: Material(child: widget)),
+            Expanded(
+              child: Material(
+                color: backgroundColor,
+                child: widget,
+              ),
+            ),
             bottomWidget(),
           ],
         ),

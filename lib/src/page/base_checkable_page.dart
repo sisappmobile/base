@@ -1,7 +1,6 @@
 // ignore_for_file: always_specify_types, use_build_context_synchronously
 
 import "package:base/base.dart";
-import "package:base/src/base_settings.dart";
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
@@ -59,10 +58,12 @@ class BaseCheckablePageState extends State<BaseCheckablePage> with WidgetsBindin
       appBar: BaseAppBar(
         context: context,
         name: widget.title,
-        tecSearch: tecSearch,
-        onChanged: (value) {
-          setState(() {});
-        },
+        searchOption: SearchOption(
+          controller: tecSearch,
+          onChanged: (value) {
+            setState(() {});
+          },
+        ),
         trailings: [
           BaseWidgets.check(
             label: "select_all".tr(),
