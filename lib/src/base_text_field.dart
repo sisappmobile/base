@@ -15,13 +15,13 @@ class BaseTextField extends StatefulWidget {
   int? minLength;
   int? maxLength;
   int? maxLines;
+  List<String>? autofillHints;
   Widget? prefixIcon;
   Widget? suffixIcon;
   Widget? suffix;
   TextInputType? textInputType;
   bool obscureText;
   FormFieldValidator<String>? validator;
-  bool? isDense = false;
 
   BaseTextField({
     super.key,
@@ -40,7 +40,7 @@ class BaseTextField extends StatefulWidget {
     this.textInputType,
     this.obscureText = false,
     this.validator,
-    this.isDense,
+    this.autofillHints,
   });
 
   @override
@@ -113,6 +113,7 @@ class BaseTextFieldState extends State<BaseTextField> {
                 readOnly: widget.readonly,
                 maxLength: widget.maxLength,
                 maxLines: widget.maxLines,
+                autofillHints: widget.autofillHints,
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 buildCounter: (context, {required currentLength, required isFocused, required maxLength}) {
                   return const SizedBox.shrink();

@@ -28,7 +28,7 @@ class BaseWidgets {
     TextInputType? textInputType,
     bool obscureText = false,
     FormFieldValidator<String>? validator,
-    bool? isDense = false,
+    List<String>? autofillHints,
   }) {
     return BaseTextField(
       mandatory: mandatory,
@@ -46,7 +46,7 @@ class BaseWidgets {
       textInputType: textInputType,
       obscureText: obscureText,
       validator: validator,
-      isDense: isDense,
+      autofillHints: autofillHints,
     );
   }
 
