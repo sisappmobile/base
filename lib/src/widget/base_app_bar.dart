@@ -215,6 +215,6 @@ class BaseAppBar extends AppBar {
       actions.add(SizedBox(width: Dimensions.size15));
     }
 
-    return null;
+    return actions;
   }
 }
