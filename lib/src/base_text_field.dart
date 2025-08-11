@@ -135,10 +135,14 @@ class BaseTextFieldState extends State<BaseTextField> {
                   suffix: widget.suffix,
                   suffixIcon: widget.suffixIcon,
                 ),
-                onChanged: widget.onChanged ?? (value) {
+                onChanged: (value) {
                   setState(() {
                     field.didChange(value);
                   });
+
+                  if (widget.onChanged != null) {
+                    widget.onChanged!(value);
+                  }
                 },
               ),
             ),

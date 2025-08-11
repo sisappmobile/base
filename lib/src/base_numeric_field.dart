@@ -107,10 +107,14 @@ class BaseNumericFieldState extends State<BaseNumericField> {
                   suffix: widget.suffix,
                   suffixIcon: widget.suffixIcon,
                 ),
-                onChanged: widget.onChanged ?? (value) {
+                onChanged: (value) {
                   setState(() {
                     field.didChange(tryParse(value));
                   });
+
+                  if (widget.onChanged != null) {
+                    widget.onChanged!(value);
+                  }
                 },
               ),
             ),
