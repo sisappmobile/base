@@ -370,7 +370,7 @@ class AppColors {
 
   static Color surfaceContainerLowest() {
     if (darkMode()) {
-      return darkColorScheme.surfaceContainerLowest;
+      return darkColorScheme.surfaceContainerHighest;
     } else {
       return lightColorScheme.surfaceContainerLowest;
     }
@@ -378,7 +378,7 @@ class AppColors {
 
   static Color surfaceContainerLow() {
     if (darkMode()) {
-      return darkColorScheme.surfaceContainerLow;
+      return darkColorScheme.surfaceContainerHigh;
     } else {
       return lightColorScheme.surfaceContainerLow;
     }
@@ -394,7 +394,7 @@ class AppColors {
 
   static Color surfaceContainerHigh() {
     if (darkMode()) {
-      return darkColorScheme.surfaceContainerHigh;
+      return darkColorScheme.surfaceContainerLow;
     } else {
       return lightColorScheme.surfaceContainerHigh;
     }
@@ -402,7 +402,7 @@ class AppColors {
 
   static Color surfaceContainerHighest() {
     if (darkMode()) {
-      return darkColorScheme.surfaceContainerHighest;
+      return darkColorScheme.surfaceContainerLowest;
     } else {
       return lightColorScheme.surfaceContainerHighest;
     }
