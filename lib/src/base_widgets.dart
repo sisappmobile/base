@@ -85,9 +85,9 @@ class BaseWidgets {
   }
 
   static Widget date({
-    required String label,
     required bool mandatory,
     required bool readonly,
+    String? label,
     Jiffy? jiffy,
     void Function(Jiffy newValue)? onSelected,
   }) {
