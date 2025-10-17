@@ -17,6 +17,7 @@ class BaseWidgets {
     required bool readonly,
     required TextEditingController controller,
     String? label,
+    String? tooltip,
     FormFieldSetter<String>? onSaved,
     ValueChanged<String>? onChanged,
     int? minLength,
@@ -35,6 +36,7 @@ class BaseWidgets {
       readonly: readonly,
       controller: controller,
       label: label,
+      tooltip: tooltip,
       onSaved: onSaved,
       onChanged: onChanged,
       minLength: minLength,
@@ -57,7 +59,7 @@ class BaseWidgets {
     bool? enabled = true,
     bool? isDense = false,
     String? label,
-    String? helperText,
+    String? tooltip,
     Widget? prefixIcon,
     Widget? suffixIcon,
     Widget? suffix,
@@ -73,7 +75,7 @@ class BaseWidgets {
       enabled: enabled!,
       isDense: isDense!,
       label: label,
-      helperText: helperText,
+      tooltip: tooltip,
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
       suffix: suffix,
@@ -88,6 +90,7 @@ class BaseWidgets {
     required bool mandatory,
     required bool readonly,
     String? label,
+    String? tooltip,
     Jiffy? jiffy,
     void Function(Jiffy newValue)? onSelected,
   }) {
@@ -97,14 +100,16 @@ class BaseWidgets {
       value: jiffy,
       onSelected: onSelected,
       label: label,
+      tooltip: tooltip,
     );
   }
 
   static Widget month({
-    required String label,
     required bool mandatory,
     required bool readonly,
-    required Jiffy? jiffy,
+    String? label,
+    String? tooltip,
+    Jiffy? jiffy,
     required void Function(Jiffy newValue) onSelected,
   }) {
     return BaseMonthField(
@@ -113,6 +118,7 @@ class BaseWidgets {
       value: jiffy,
       onSelected: onSelected,
       label: label,
+      tooltip: tooltip,
     );
   }
 
@@ -123,6 +129,7 @@ class BaseWidgets {
     required dynamic value,
     required void Function(SpinnerItem selectedItem) onSelected,
     String? label,
+    String? tooltip,
     String? defaultDescription,
     Widget Function(SpinnerItem spinnerItem)? customItemWidget,
     Widget? separatorWidget,
@@ -135,6 +142,7 @@ class BaseWidgets {
       value: value,
       onSelected: onSelected,
       label: label,
+      tooltip: tooltip,
       defaultDescription: defaultDescription,
       customItemWidget: customItemWidget,
       separatorWidget: separatorWidget,

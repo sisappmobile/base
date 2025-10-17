@@ -7,11 +7,13 @@ import "package:smooth_corner/smooth_corner.dart";
 
 class SearchOption {
   final TextEditingController controller;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
 
   SearchOption({
     required this.controller,
-    required this.onChanged,
+    this.onChanged,
+    this.onSubmitted,
   });
 }
 
@@ -33,7 +35,6 @@ class BaseAppBar extends AppBar {
     super.leading,
     super.shape,
     super.bottom,
-    super.primary,
     super.backgroundColor,
     super.foregroundColor,
     super.key,
@@ -176,6 +177,7 @@ class BaseAppBar extends AppBar {
               ),
               hintText: "${"search".tr()}...",
               onChanged: searchOption!.onChanged,
+              onSubmitted: searchOption!.onSubmitted,
             ),
           ),
         );
@@ -191,10 +193,6 @@ class BaseAppBar extends AppBar {
 
     if (super.bottom == null && bottom != null) {
       size = Size(size.width, size.height + (bottom!.preferredSize.height + Dimensions.size10));
-    }
-
-    if (!primary) {
-      size = Size(size.width, size.height - Dimensions.size25);
     }
 
     return size;

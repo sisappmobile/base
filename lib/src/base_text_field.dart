@@ -10,6 +10,7 @@ class BaseTextField extends StatefulWidget {
   final bool readonly;
   final TextEditingController controller;
   String? label;
+  String? tooltip;
   FormFieldSetter<String>? onSaved;
   ValueChanged<String>? onChanged;
   int? minLength;
@@ -29,6 +30,7 @@ class BaseTextField extends StatefulWidget {
     required this.readonly,
     required this.controller,
     this.label,
+    this.tooltip,
     this.onSaved,
     this.onChanged,
     this.minLength,
@@ -155,16 +157,44 @@ class BaseTextFieldState extends State<BaseTextField> {
 
   Widget labelWidget() {
     if (StringUtils.isNotNullOrEmpty(widget.label)) {
+      Widget tooltipWidget() {
+        if (StringUtils.isNotNullOrEmpty(widget.tooltip)) {
+          return Container(
+            margin: EdgeInsets.only(left: Dimensions.size5),
+            child: Tooltip(
+              message: widget.tooltip,
+              triggerMode: TooltipTriggerMode.tap,
+              child: Icon(
+                Icons.info,
+                size: Dimensions.size15,
+                color: AppColors.warning(),
+              ),
+            ),
+          );
+        }
+
+        return const SizedBox.shrink();
+      }
+
       return Container(
         margin: EdgeInsets.only(
           bottom: Dimensions.size5,
         ),
-        child: Text(
-          "${widget.label}${widget.mandatory ? "*" : ""}",
-          style: TextStyle(
-            fontSize: Dimensions.text12,
-            fontWeight: FontWeight.w700,
-            color: AppColors.onSurface().withValues(alpha: 80),
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "${widget.label}${widget.mandatory ? "*" : ""}",
+                style: TextStyle(
+                  fontSize: Dimensions.text12,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.onSurface().withValues(alpha: 80),
+                ),
+              ),
+              WidgetSpan(
+                child: tooltipWidget(),
+              ),
+            ],
           ),
         ),
       );

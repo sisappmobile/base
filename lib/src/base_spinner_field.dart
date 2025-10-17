@@ -12,12 +12,13 @@ class BaseSpinnerField extends StatefulWidget {
   final dynamic value;
   final void Function(SpinnerItem selectedItem) onSelected;
   final String? label;
+  String? tooltip;
   final String? defaultDescription;
   final Widget Function(SpinnerItem spinnerItem)? customItemWidget;
   final Widget? separatorWidget;
   final EdgeInsets? padding;
 
-  const BaseSpinnerField({
+  BaseSpinnerField({
     super.key,
     required this.mandatory,
     required this.readonly,
@@ -25,6 +26,7 @@ class BaseSpinnerField extends StatefulWidget {
     required this.value,
     required this.onSelected,
     this.label,
+    this.tooltip,
     this.defaultDescription,
     this.customItemWidget,
     this.separatorWidget,
@@ -126,16 +128,44 @@ class BaseSpinnerFieldState extends State<BaseSpinnerField> {
 
   Widget labelWidget() {
     if (StringUtils.isNotNullOrEmpty(widget.label)) {
+      Widget tooltipWidget() {
+        if (StringUtils.isNotNullOrEmpty(widget.tooltip)) {
+          return Container(
+            margin: EdgeInsets.only(left: Dimensions.size5),
+            child: Tooltip(
+              message: widget.tooltip,
+              triggerMode: TooltipTriggerMode.tap,
+              child: Icon(
+                Icons.info,
+                size: Dimensions.size15,
+                color: AppColors.warning(),
+              ),
+            ),
+          );
+        }
+
+        return const SizedBox.shrink();
+      }
+
       return Container(
         margin: EdgeInsets.only(
           bottom: Dimensions.size5,
         ),
-        child: Text(
-          "${widget.label}${widget.mandatory ? "*" : ""}",
-          style: TextStyle(
-            fontSize: Dimensions.text12,
-            fontWeight: FontWeight.w700,
-            color: AppColors.onSurface().withValues(alpha: 80),
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "${widget.label}${widget.mandatory ? "*" : ""}",
+                style: TextStyle(
+                  fontSize: Dimensions.text12,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.onSurface().withValues(alpha: 80),
+                ),
+              ),
+              WidgetSpan(
+                child: tooltipWidget(),
+              ),
+            ],
           ),
         ),
       );

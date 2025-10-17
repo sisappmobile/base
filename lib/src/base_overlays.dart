@@ -53,7 +53,7 @@ class ErrorOverlay extends ModalRoute<void> {
               width: Dimensions.size100 * 3,
               repeat: false,
             ),
-            Text(
+            SelectableText(
               message,
               style: TextStyle(
                 fontSize: Dimensions.text20,
@@ -152,7 +152,7 @@ class SuccessOverlay extends ModalRoute<void> {
             SizedBox(
               height: Dimensions.size50,
             ),
-            Text(
+            SelectableText(
               message,
               style: TextStyle(
                 fontSize: Dimensions.text20,
@@ -286,7 +286,7 @@ class InfoOverlay extends ModalRoute<void> {
             SizedBox(
               height: Dimensions.size50,
             ),
-            Text(
+            SelectableText(
               message,
               style: TextStyle(
                 fontSize: Dimensions.text20,

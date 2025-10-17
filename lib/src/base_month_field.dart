@@ -9,16 +9,18 @@ class BaseMonthField extends StatefulWidget {
   final bool mandatory;
   final bool readonly;
   final Jiffy? value;
-  final void Function(Jiffy newValue)? onSelected;
-  final String? label;
+  void Function(Jiffy newValue)? onSelected;
+  String? label;
+  String? tooltip;
 
-  const BaseMonthField({
+  BaseMonthField({
     super.key,
     required this.mandatory,
     required this.readonly,
     required this.value,
     this.onSelected,
     this.label,
+    this.tooltip,
   });
 
   @override
@@ -108,16 +110,44 @@ class BaseMonthFieldState extends State<BaseMonthField> {
 
   Widget labelWidget() {
     if (StringUtils.isNotNullOrEmpty(widget.label)) {
+      Widget tooltipWidget() {
+        if (StringUtils.isNotNullOrEmpty(widget.tooltip)) {
+          return Container(
+            margin: EdgeInsets.only(left: Dimensions.size5),
+            child: Tooltip(
+              message: widget.tooltip,
+              triggerMode: TooltipTriggerMode.tap,
+              child: Icon(
+                Icons.info,
+                size: Dimensions.size15,
+                color: AppColors.warning(),
+              ),
+            ),
+          );
+        }
+
+        return const SizedBox.shrink();
+      }
+
       return Container(
         margin: EdgeInsets.only(
           bottom: Dimensions.size5,
         ),
-        child: Text(
-          "${widget.label}${widget.mandatory ? "*" : ""}",
-          style: TextStyle(
-            fontSize: Dimensions.text12,
-            fontWeight: FontWeight.w700,
-            color: AppColors.onSurface().withValues(alpha: 80),
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "${widget.label}${widget.mandatory ? "*" : ""}",
+                style: TextStyle(
+                  fontSize: Dimensions.text12,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.onSurface().withValues(alpha: 80),
+                ),
+              ),
+              WidgetSpan(
+                child: tooltipWidget(),
+              ),
+            ],
           ),
         ),
       );
