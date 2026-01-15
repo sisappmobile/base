@@ -1,6 +1,6 @@
 name: base
 description: "Base package for sisapp"
-version: 2.0.9
+version: 2.0.11
 publish_to: none
 
 environment:

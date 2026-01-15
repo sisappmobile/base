@@ -191,10 +191,12 @@ class BaseWidgets {
               ),
             ),
             SizedBox(width: Dimensions.size10),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: Dimensions.text14,
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: Dimensions.text14,
+                ),
               ),
             ),
           ],
