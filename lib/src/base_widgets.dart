@@ -155,7 +155,28 @@ class BaseWidgets {
     required bool? value,
     required bool readonly,
     required void Function(bool newValue) onChanged,
+    bool expanded = false,
   }) {
+    Widget labelWidget() {
+      if (expanded) {
+        return Expanded(
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: Dimensions.text14,
+            ),
+          ),
+        );
+      } else {
+        return Text(
+          label,
+          style: TextStyle(
+            fontSize: Dimensions.text14,
+          ),
+        );
+      }
+    }
+
     return InkWell(
       onTap: !readonly ? () {
         onChanged(!(value ?? false));
@@ -191,14 +212,7 @@ class BaseWidgets {
               ),
             ),
             SizedBox(width: Dimensions.size10),
-            Expanded(
-              child: Text(
-                label,
-                style: TextStyle(
-                  fontSize: Dimensions.text14,
-                ),
-              ),
-            ),
+            labelWidget(),
           ],
         ),
       ),
