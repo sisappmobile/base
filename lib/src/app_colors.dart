@@ -3,7 +3,6 @@
 import "package:base/src/base_preferences.dart";
 import "package:base/src/extensions.dart";
 import "package:flutter/material.dart";
-import "package:get/get.dart";
 
 class AppColors {
   static const String THEME_MODE = "THEME_MODE";
@@ -16,11 +15,12 @@ class AppColors {
     } else if (mode == ThemeMode.dark) {
       return Brightness.dark;
     } else {
-      if (Get.context != null) {
-        return MediaQuery.of(Get.context!).platformBrightness;
-      }
-
-      return Brightness.light;
+      // PENTING (performa): jangan pakai MediaQuery.of(Get.context!) di sini.
+      // Itu mendaftarkan root navigator sebagai dependent seluruh MediaQuery,
+      // sehingga navigator ikut di-rebuild pada setiap frame animasi keyboard
+      // (viewInsets berubah per frame). platformDispatcher memberikan nilai
+      // yang sama tanpa dependensi context.
+      return WidgetsBinding.instance.platformDispatcher.platformBrightness;
     }
   }
 

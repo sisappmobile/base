@@ -22,7 +22,7 @@ class BaseBottomBar extends StatelessWidget {
           Dimensions.size15,
           Dimensions.size15,
           Dimensions.size15,
-          Dimensions.size15 + (removeBottomInset ? 0 : MediaQuery.of(context).padding.bottom),
+          Dimensions.size15 + (removeBottomInset ? 0 : MediaQuery.paddingOf(context).bottom),
       ),
       decoration: BoxDecoration(
         color: backgroundColor ?? AppColors.surfaceContainerLowest(),

@@ -58,6 +58,10 @@ class Dimensions {
   static double size100 = 100;
 
   static bool isMobile() {
-    return MediaQuery.of(Get.context!).size.width < 600;
+    // PENTING (performa): pakai sizeOf (dependensi aspek size saja), bukan
+    // MediaQuery.of yang membuat root navigator bergantung pada seluruh
+    // MediaQuery — termasuk viewInsets yang berubah setiap frame animasi
+    // keyboard. Ukuran layar tidak berubah saat keyboard muncul.
+    return MediaQuery.sizeOf(Get.context!).width < 600;
   }
 }
